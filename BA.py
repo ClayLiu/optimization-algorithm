@@ -87,7 +87,7 @@ class BatSwarm():
             x[i] = (u - l) * random.random() + l
 
         return x
-    
+ 
     def bound_check(self):
         ''' 检查蝙蝠有没有超过边界，有则拉回边界 '''
         for bat in self.bat_swarm:
