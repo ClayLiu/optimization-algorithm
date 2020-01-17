@@ -2,7 +2,8 @@ import numpy as np
 import random
 import math
 import tqdm
- 
+from for_image import get_fig
+
 class Bat():
     def __init__(self, position : np.ndarray, velocity : np.ndarray, f_bound : tuple):
         
@@ -25,7 +26,7 @@ class Bat():
         self.frequency = self.min_f + self.max_min_f * beta
 
         self.velocity += (self.position - best_position) * self.frequency
-        self.position += self.velocity
+        self.position_new = self.velocity + self.position
     
     def search_local(self, ave_A : float) -> np.ndarray:
         eps = (random.random() * 2 - 1)
@@ -43,7 +44,7 @@ class Bat():
         )
 
 class BatSwarm():
-    def __init__(self, func, subject_func, bat_num, alpha, gamma, x_bound, v_bound, f_bound : tuple):
+    def __init__(self, func, subject_func, bat_num, alpha, gamma, x_bound, v_bound, f_bound : tuple, image_save_path : str):
         '''
         :param func:            目标函数 \n
         :param subject_func:    约束条件判断函数 \n
@@ -53,6 +54,7 @@ class BatSwarm():
         :param x_bound:         x在各维度的取值范围 \n
         :param v_bound:         v在各维度的取值范围 \n
         :param f_bound:         f在各维度的取值范围 \n
+        :param image_save_path: 出图位置 \n
         '''
         self.func = func
         self.suject_func = subject_func
@@ -61,7 +63,8 @@ class BatSwarm():
         self.v_bound = v_bound
         self.f_bound = f_bound
         self.x_dim = len(x_bound)
-        
+        self.image_save_path = image_save_path
+
         self.alpha = alpha
         self.gamma = gamma
 
@@ -87,7 +90,7 @@ class BatSwarm():
             x[i] = (u - l) * random.random() + l
 
         return x
- 
+    
     def bound_check(self):
         ''' 检查蝙蝠有没有超过边界，有则拉回边界 '''
         for bat in self.bat_swarm:
@@ -116,81 +119,50 @@ class BatSwarm():
 
     def iteration(self, iter_num : int):
         
+        best_fitness_value = []
+        
         self.get_fitness()
         best_bat_index = np.argmin(self.fitness)
+        best_fitness_value.append(self.fitness[best_bat_index])
         best_position = self.bat_swarm[best_bat_index].position.copy()
         print(best_position, self.fitness[best_bat_index])
 
         for t in tqdm.tqdm(range(1, iter_num + 1)):
-            _sum = 0
+            _sum = 0.0
             for single_bat in self.bat_swarm:
                 _sum += single_bat.A
             current_ave_A = _sum / self.bat_num
 
             for i, single_bat in enumerate(self.bat_swarm):
+                # 产生新解
                 single_bat.update_global(best_position)
 
                 if random.random() > single_bat.r:
                     single_bat.search_local(current_ave_A)
 
                 if random.random() < single_bat.A:
-                    new_fitness = self.func(single_bat.position_new)
-                    if new_fitness < self.fitness[i]:
-                        self.fitness[i] = new_fitness
-                        single_bat.position = single_bat.position_new.copy()
-                        single_bat.update_A_and_r(self.alpha, self.gamma, t)
-            
-            self.bound_check()
-            self.subjections()
-            self.get_fitness()
+                    # 新解满足约束条件
+                    if self.suject_func(single_bat.position_new):
+                        new_fitness = self.func(single_bat.position_new)
+                        if new_fitness < self.fitness[i]:
+                            self.fitness[i] = new_fitness
+                            single_bat.position = single_bat.position_new.copy()
+                            
+                            if new_fitness < self.fitness[best_bat_index]:
+                                best_bat_index = i
+                                best_position = self.bat_swarm[best_bat_index].position  # 改变当代最优蝙蝠，代替迭代后再重新选出最优蝙蝠的低效做法
+                            
+                            single_bat.update_A_and_r(self.alpha, self.gamma, t)
+                
+            # self.bound_check()    # 因为约束条件空间为搜索空间的子空间，所以满足恒在约束空间即在搜索空间
+            # self.subjections()    # 因为始解满足约束条件，每次新解也检查一遍，所以不需要再全部检查了，减少运算量
+            # self.get_fitness()    # 因为产生新解时已经算了一遍适应度，所以不需要再全部计算了，避免重复
+
             best_bat_index = np.argmin(self.fitness)
-            best_position = self.bat_swarm[best_bat_index].position.copy()
+            best_fitness_value.append(self.fitness[best_bat_index])
+            # best_position = self.bat_swarm[best_bat_index].position.copy()
         
+        get_fig(best_fitness_value, self.image_save_path + 'BA_fitness.png')
+
         return best_position, self.fitness[best_bat_index]
 
-f = lambda x1, x2, x3, x4 : 0.6224 * x1 * x3 * x4 + 1.7781 * x2 * (x3 ** 2) + 3.1661 * (x1 ** 2) * x4 + 19.84 * (x1 ** 2) * x3
-
-a = np.array([0.8125, 0.4375, 42.0984456, 176.6365958])
-print(f(*a))
-
-def test_func(x : np.ndarray):
-    cal_f = f(*x)
-    if cal_f > 0:
-        return cal_f
-    else:
-        return 99999999
-
-def subject_func(x1, x2, x3, x4):
-    return x4 <= 240 and -x1 + 0.0193 * x3 <= 0 and -x2 + 0.00954 * x3 <= 0 and - math.pi * x3 ** 2 * x4 - 4/3*math.pi*x3**3 + 1296000 <= 0
-
-def sj_func(x : np.ndarray):
-    return subject_func(*x)
-
-if __name__ == '__main__':
-    func = test_func
-    M = 200
-    x_bound = [
-        (0.0625, 1), 
-        (0, 1), 
-        (10, 100), 
-        (100, 200)
-    ]
-    v_bound = [
-        (-0.1, 0.1),
-        (-0.1, 0.1),
-        (-0.1, 0.1),
-        (-0.1, 0.1)
-    ]
-    test = BatSwarm(
-        func,
-        sj_func,
-        25,
-        0.9,
-        0.9,
-        x_bound,
-        v_bound,
-        (0, 1)
-    )
-    best = test.iteration(15000)
-    print(test.fitness)
-    print(best)
