@@ -57,7 +57,7 @@ class BatSwarm():
         :param image_save_path: 出图位置 \n
         '''
         self.func = func
-        self.suject_func = subject_func
+        self.subject_func = subject_func
         self.bat_num = bat_num
         self.x_bound = x_bound
         self.v_bound = v_bound
@@ -106,7 +106,7 @@ class BatSwarm():
             随机生成的也要检查是否符合，直到符合条件
         '''
         for i in range(self.bat_num):
-            while not self.suject_func(self.bat_swarm[i].position):
+            while not self.subject_func(self.bat_swarm[i].position):
                 self.bat_swarm[i] = Bat(
                     self.randomly_make_up_x(self.x_bound, self.x_dim),
                     self.randomly_make_up_x(self.v_bound, self.x_dim),
@@ -142,7 +142,7 @@ class BatSwarm():
 
                 if random.random() < single_bat.A:
                     # 新解满足约束条件
-                    if self.suject_func(single_bat.position_new):
+                    if self.subject_func(single_bat.position_new):
                         new_fitness = self.func(single_bat.position_new)
                         if new_fitness < self.fitness[i]:
                             self.fitness[i] = new_fitness
