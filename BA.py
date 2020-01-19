@@ -2,7 +2,8 @@ import numpy as np
 import random
 import math
 import tqdm
-from Common.for_image import get_fig
+from for_image import get_fig
+from bounds import Bounds
 
 class Bat():
     def __init__(self, position : np.ndarray, velocity : np.ndarray, f_bound : tuple):
@@ -14,8 +15,8 @@ class Bat():
         self.r = random.random()     # 脉冲率 [0, 1]       
         self.r_zero = self.r
 
-        self.min_f = f_bound[0]
-        self.max_f = f_bound[1]
+        self.min_f = f_bound[Bounds.lower]
+        self.max_f = f_bound[Bounds.upper]
         self.max_min_f = self.max_f - self.min_f
 
         self.frequency = random.random() * self.max_min_f + self.min_f
@@ -84,27 +85,27 @@ class BatSwarm():
         x = np.empty(x_dim)
 
         for i, x_i_bound in enumerate(x_bound):
-            l = x_i_bound[0]
-            u = x_i_bound[1]
+            l = x_i_bound[Bounds.lower]
+            u = x_i_bound[Bounds.upper]
             x[i] = (u - l) * random.random() + l
 
         return x
     
     def __in_bound_check(self, x : np.ndarray):
         for i in range(self.x_dim):
-            if x[i] > self.x_bound[i][0]:
+            if x[i] > self.x_bound[i][Bounds.upper]:
                 return False
-            elif x[i] < self.x_bound[i][0]:
+            elif x[i] < self.x_bound[i][Bounds.lower]:
                 return False
 
     def bound_check(self):
         ''' 检查蝙蝠有没有超过边界，有则拉回边界 '''
         for bat in self.bat_swarm:
             for i in range(self.x_dim):
-                if bat.position[i] > self.x_bound[i][0]:
-                    bat.position[i] = self.x_bound[i][1]
-                elif bat.position[i] < self.x_bound[i][0]:
-                    bat.position[i] = self.x_bound[i][0]
+                if bat.position[i] > self.x_bound[i][Bounds.upper]:
+                    bat.position[i] = self.x_bound[i][Bounds.upper]
+                elif bat.position[i] < self.x_bound[i][Bounds.lower]:
+                    bat.position[i] = self.x_bound[i][Bounds.lower]
 
     def subjections(self):
         ''' 
@@ -148,9 +149,9 @@ class BatSwarm():
                     single_bat.search_local(current_ave_A)
 
                 if random.random() < single_bat.A:
-                    # 判断是否符合约束条件，若为无约束，则判断是否在搜索边界
+                    # 判断是否符合约束条件
                     if self.subject_func:
-                        subject_pass = self.subject_func(single_bat.position_new)
+                        subject_pass = self.subject_func(single_bat.position_new) and self.__in_bound_check(single_bat.position_new)
                     else:
                         subject_pass = self.__in_bound_check(single_bat.position_new)
                     
@@ -165,10 +166,7 @@ class BatSwarm():
                                 best_bat_index = i
                                 best_position = self.bat_swarm[best_bat_index].position  # 改变当代最优蝙蝠，代替迭代后再重新选出最优蝙蝠的低效做法
                             
-                            single_bat.update_A_and_r(self.alpha, self.gamma, t)
-            
-            if self.subject_func == None: 
-                self.bound_check()    # 因为约束条件空间为搜索空间的子空间，所以满足恒在约束空间即在搜索空间，若该问题无约束，则检查边界
+                            single_bat.update_A_and_r(self.alpha, self.gamma, t)    
             
             # self.subjections()    # 因为始解满足约束条件，每次新解也检查一遍，所以不需要再全部检查了，减少运算量
             # self.get_fitness()    # 因为产生新解时已经算了一遍适应度，所以不需要再全部计算了，避免重复
