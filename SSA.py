@@ -41,18 +41,9 @@ class SSA:
         return singleSalpPosition
 
     def init_population(self):
-        positions = []
-        for i in range(self.salpSum):
-            # print("正在生成第"+str(i+1)+"个salp")
-            try:
-                positions.append(self.generate_salp())
-            except MismatchError as e:
-                print(e.info)
-                sys.exit(1)
-        self.salpPositions = np.array(positions)
+        self.salpPositions = generate_population(self.salpSum, self.boundsList, self.constraintFunction)
         self.get_bounds_lowers()
         self.get_bounds_uppers()
-        # print(self.salpPositions)
 
     def get_bounds_uppers(self):
         for index, singlebound in enumerate(self.boundsList):

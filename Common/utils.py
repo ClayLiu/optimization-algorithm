@@ -1,6 +1,8 @@
 from inspect import isfunction
 from Exceptions.Errors import *
 from Common.EnumSet import Bounds
+import numpy as np
+import sys
 
 
 def inspectors(variablesList, boundsList, constraintFunction):
@@ -24,3 +26,33 @@ def inspectors(variablesList, boundsList, constraintFunction):
         else:
             if variablesList[index] < dimensionBounds[Bounds.lower.value] or variablesList[index] > dimensionBounds[Bounds.upper.value]:
                 raise IllegalVariableError
+
+
+def generate_individual(boundsList, constraintFunction):
+    while True:
+        singlePosition = []
+        for index, dimensionBounds in enumerate(boundsList):
+            if isinstance(dimensionBounds, int):
+                singlePosition.append(dimensionBounds)
+            else:
+                singlePosition.append(np.random.rand()*(dimensionBounds[Bounds.upper.value] - dimensionBounds[Bounds.lower.value]) + dimensionBounds[Bounds.lower.value])
+        try:
+            inspectors(singlePosition, boundsList, constraintFunction)
+        except IllegalVariableError as e:
+            continue
+        except ViolatedConstraintError as e:
+            continue
+        break
+    return singlePosition
+
+
+def generate_population(populationQuantity, boundsList, constraintFunction):
+    positions = []
+    for i in range(populationQuantity):
+        try:
+            positions.append(generate_individual(boundsList, constraintFunction))
+        except MismatchError as e:
+            print(e.info)
+            sys.exit(1)
+    populationPositions = np.array(positions)
+    return populationPositions
