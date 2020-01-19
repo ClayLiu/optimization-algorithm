@@ -33,14 +33,14 @@ class SSA:
             if isinstance(singlebound, int):
                 self.boundUppers[index] = singlebound
             else:
-                self.boundUppers[index] = singlebound[Bounds().upper]
+                self.boundUppers[index] = singlebound[Bounds.upper]
 
     def get_bounds_lowers(self):
         for index, singlebound in enumerate(self.boundsLists):
             if isinstance(singlebound, int):
                 self.boundLowers[index] = singlebound
             else:
-                self.boundLowers[index] = singlebound[Bounds().lower]
+                self.boundLowers[index] = singlebound[Bounds.lower]
 
     def get_fitness(self):
         return np.array([self.objectiveFunction(*position) for position in self.salpPositions])

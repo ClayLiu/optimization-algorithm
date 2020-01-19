@@ -24,7 +24,7 @@ def inspectors(variablesList, boundsList, constraintFunction):
             if variablesList[index] != dimensionBounds:
                 raise IllegalVariableError
         else:
-            if variablesList[index] < dimensionBounds[Bounds().lower] or variablesList[index] > dimensionBounds[Bounds().upper]:
+            if variablesList[index] < dimensionBounds[Bounds.lower] or variablesList[index] > dimensionBounds[Bounds.upper]:
                 raise IllegalVariableError
 
 
@@ -35,7 +35,7 @@ def generate_individual(boundsList, constraintFunction):
             if isinstance(dimensionBounds, int):
                 singlePosition.append(dimensionBounds)
             else:
-                singlePosition.append(np.random.rand()*(dimensionBounds[Bounds().upper] - dimensionBounds[Bounds().lower]) + dimensionBounds[Bounds().lower])
+                singlePosition.append(np.random.rand()*(dimensionBounds[Bounds.upper] - dimensionBounds[Bounds.lower]) + dimensionBounds[Bounds.lower])
         try:
             inspectors(singlePosition, boundsList, constraintFunction)
         except IllegalVariableError as e:
@@ -64,9 +64,9 @@ def convert_position_to_legal(position, boundsLists):
             if var != boundsLists[index]:
                 position[index] = boundsLists[index]
         else:
-            if var < boundsLists[index][Bounds().lower]:
-                position[index] = boundsLists[index][Bounds().lower]
-            elif var > boundsLists[index][Bounds().upper]:
-                position[index] = boundsLists[index][Bounds().upper]
+            if var < boundsLists[index][Bounds.lower]:
+                position[index] = boundsLists[index][Bounds.lower]
+            elif var > boundsLists[index][Bounds.upper]:
+                position[index] = boundsLists[index][Bounds.upper]
 
     return position
