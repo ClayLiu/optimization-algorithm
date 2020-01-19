@@ -2,8 +2,8 @@ import numpy as np
 import random
 import math
 import tqdm
-from commom.for_image import get_fig
-from common.bounds import Bounds
+from Commom.for_image import get_fig
+from Common.bounds import Bounds
 
 class Bat():
     def __init__(self, position : np.ndarray, velocity : np.ndarray, f_bound : tuple):
