@@ -5,7 +5,7 @@ import time
 import sys
 
 from Exceptions.Errors import *
-from bounds import Bounds
+from EnumSet import Bounds
 from inspect import isfunction
 
 
