@@ -97,7 +97,7 @@ class PSO:
         for i in range(self.iterNum):
             self.pso()
 
-            print(i)
+            print("正在进行第", i, "次迭代")
         print(self.globalBestPosition, self.func(*self.globalBestPosition))
 
 

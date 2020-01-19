@@ -81,7 +81,9 @@ class SSA:
                 self.F = self.salpPositions[np.argmax(self.get_fitness()), :].copy()
             else:
                 self.F = self.salpPositions[np.argmin(self.get_fitness()), :].copy()
+
             self.c1 = 2*math.exp(- (4*i / self.iterNum)**2)
+
             for j, position in enumerate(self.salpPositions):
                 if j < self.salpPositions.shape[0] / 2:
                     self.salpPositions[j] = self.update_leader_salp_position()
