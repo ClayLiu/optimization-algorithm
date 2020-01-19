@@ -2,7 +2,7 @@ import numpy as np
 import random
 import math
 import tqdm
-from for_image import get_fig
+from Common.for_image import get_fig
 
 class Bat():
     def __init__(self, position : np.ndarray, velocity : np.ndarray, f_bound : tuple):

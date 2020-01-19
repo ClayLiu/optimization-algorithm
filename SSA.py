@@ -1,11 +1,9 @@
 import numpy as np
 import math
-import visdom
-import time
 import sys
 
 from Exceptions.Errors import *
-from EnumSet import Bounds
+from Common.EnumSet import Bounds
 from inspect import isfunction
 
 
@@ -70,7 +68,7 @@ class SSA:
     def init_population(self):
         positions = []
         for i in range(self.salpSum):
-            print("正在生成第"+str(i+1)+"个 salp")
+            # print("正在生成第"+str(i+1)+"个salp")
             try:
                 positions.append(self.generate_salp())
             except MismatchError as e:
@@ -160,10 +158,10 @@ class SSA:
                 else:
                     self.salpPositions[j] = self.update_follower_salp_position(self.salpPositions[j, :], self.salpPositions[j - 1, :])
 
-            print("当前最优解: ")
-            print(self.F)
-            print("当前适应度: ")
-            print(self.objectiveFunction(*self.F))
+            # print("当前最优解: ")
+            # print(self.F)
+            # print("当前适应度: ")
+            # print(self.objectiveFunction(*self.F))
 
 
         print()
