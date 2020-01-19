@@ -1,10 +1,7 @@
 import numpy as np
 import math
 import sys
-
-from Exceptions.Errors import *
-from Common.EnumSet import Bounds
-from inspect import isfunction
+from Common.utils import *
 
 
 class SSA:
@@ -26,28 +23,6 @@ class SSA:
         self.extremum = extremum
         self.init_population()
 
-    def inspectors(self, variablesList):
-
-        # 检查变量间是否符合约束
-        if isfunction(self.constraintFunction):
-            if not self.constraintFunction(*variablesList):
-                raise ViolatedConstraintError
-        else:
-            for constraintfunction in self.constraintFunction:
-                if not constraintfunction(*variablesList):
-                    raise ViolatedConstraintError
-
-        # 检查单个变量是否符合约束
-        if len(variablesList) != len(self.boundsList):
-            raise MismatchError
-        for index, dimensionBounds in enumerate(self.boundsList):
-            if isinstance(dimensionBounds, int):
-                if variablesList[index] != dimensionBounds:
-                    raise IllegalVariableError
-            else:
-                if variablesList[index] < dimensionBounds[Bounds.lower.value] or variablesList[index] > dimensionBounds[Bounds.upper.value]:
-                    raise IllegalVariableError
-
     def generate_salp(self):
         while True:
             singleSalpPosition = []
@@ -57,7 +32,7 @@ class SSA:
                 else:
                     singleSalpPosition.append(np.random.rand()*(dimensionBounds[Bounds.upper.value] - dimensionBounds[Bounds.lower.value]) + dimensionBounds[Bounds.lower.value])
             try:
-                self.inspectors(singleSalpPosition)
+                inspectors(singleSalpPosition, self.boundsList, self.constraintFunction)
             except IllegalVariableError as e:
                 continue
             except ViolatedConstraintError as e:
@@ -105,7 +80,7 @@ class SSA:
                 position = self.F - self.c1 * (
                         (self.boundUppers - self.boundLowers) * np.random.random() + self.boundLowers)
             try:
-                self.inspectors(position)
+                inspectors(position, self.boundsList, self.constraintFunction)
             except ViolatedConstraintError:
                 continue
             except IllegalVariableError:
@@ -117,7 +92,7 @@ class SSA:
         while True:
             position = 0.5 * (currentPosition + lastPosition)
             try:
-                self.inspectors(position)
+                inspectors(position, self.boundsList, self.constraintFunction)
             except ViolatedConstraintError:
                 continue
             except IllegalVariableError:
@@ -174,7 +149,7 @@ class SSA:
 
 # 定义变量的约束
 # boundsList = ((-10, 10), (-10, 10), (0, 150), (50, 240))
-boundsList = [(-2*math.pi, 2*math.pi), (-2*math.pi, 2*math.pi)]
+boundsList = ((-2*math.pi, 2*math.pi), (-2*math.pi, 2*math.pi))
 # 定义目标函数
 # objectiveFunction = lambda x1, x2, x3, x4: 0.6221*x1*x3*x4 + 1.7781*x2*x3**2 + 3.1661*x4*x1**2 + 19.84*x3*x1**2
 objectiveFunction = lambda x, y: x**2 + y**2 + 25 * (math.sin(x) ** 2 + math.sin(y) ** 2)

@@ -35,7 +35,6 @@ class PSO:
         self.pbest = np.zeros([self.p_num, self.dim])
         self.gbest = np.zeros([1, self.dim])
         self.init_Population()
-        self.vis = visdom.Visdom()
 
     def init_Population(self):
         a = []
@@ -93,14 +92,8 @@ class PSO:
         pass
 
     def iterator(self):
-        win_line = self.vis.line(X=np.array([0]), Y=np.array([0]))
         for _ in range(self.iter_num):
             self.pso()
-            self.vis.line(X=np.array([_]),
-                          Y=np.array([func(*self.gbest)]),
-                          win=win_line,
-                          update='append')
-
             print(self.gbest, func(*self.gbest))
 
 
