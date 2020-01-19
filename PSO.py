@@ -5,8 +5,8 @@ from Common.utils import *
 
 
 class PSO:
-    def __init__(self, func, dim, boundsLists, constraintFunction, v_max,  particleSum, iter_num, w=1, c1=0.2, c2=0.2):
-        self.v_max = v_max
+    def __init__(self, func, boundsLists, constraintFunction, velocityMax,  particleSum, iterNum, w=1, c1=0.2, c2=0.2, extremum=False):
+        self.velocityMax = velocityMax
         self.dimension = len(boundsList)
         self.constraintFunction = constraintFunction
         self.func = func
@@ -14,78 +14,76 @@ class PSO:
         self.c2 = c2
         self.w = w
         self.particleSum = particleSum
-        self.iter_num = iter_num
+        self.iterNum = iterNum
         self.boundsLists = boundsLists
-        self.position = np.zeros([self.particleSum, self.dimension])
+        self.particleSwarmPosition = np.zeros([self.particleSum, self.dimension])
         self.velocity = np.zeros([self.particleSum, self.dimension])
-        self.pbest = np.zeros([self.particleSum, self.dimension])
-        self.gbest = np.zeros([1, self.dimension])
-        self.init_Population()
+        self.particleBest = np.zeros([self.particleSum, self.dimension])
+        self.globalBest = np.zeros([self.dimension])
+        self.extremum = extremum
+        self.init_population()
 
-    def init_Population(self):
-        a = []
-        for item in self.boundsLists:
-            if isinstance(item, int):
-                _a = np.full((self.particleSum, 1), item)
-            else:
-                _a = np.random.rand(self.particleSum, 1) * (item[1] - item[0]) + item[0]
-            a.append(_a)
-        self.position = np.concatenate(tuple(a), axis=1)
-        self.velocity = np.random.rand(*self.position.shape) * self.v_max
-        self.pbest = self.position.copy()
-        self.gbest = min(self.pbest, key=lambda particle: self.func(*particle)).copy()
+    def init_population(self):
+        self.particleSwarmPosition = generate_population(self.particleSum, self.boundsLists, self.constraintFunction)
+        self.velocity = np.random.rand(*self.particleSwarmPosition.shape) * self.velocityMax
+        self.particleBest = self.particleSwarmPosition.copy()
+        self.globalBest = self.get_global_best()
 
-    def generate_particle(self):
-        while True:
-            singleParticlePosition = []
-            for index, dimensionBounds in enumerate(self.boundsLists):
-                if isinstance(dimensionBounds, int):
-                    singleParticlePosition.append(dimensionBounds)
-                else:
-                    singleParticlePosition.append(np.random.rand()*(dimensionBounds[Bounds.upper.value] - dimensionBounds[Bounds.lower.value]) + dimensionBounds[Bounds.lower.value])
-            try:
-                inspectors(singleParticlePosition, self.boundsLists, self.constraintFunction)
-            except IllegalVariableError as e:
-                continue
-            except ViolatedConstraintError as e:
-                continue
-            break
-        return singleParticlePosition
+    def get_global_best(self):
+        if self.extremum:
+            globalBest = max(self.particleBest, key=lambda particle: self.func(*particle)).copy()
+        else:
+            globalBest = min(self.particleBest, key=lambda particle: self.func(*particle)).copy()
+        return globalBest
 
     def get_fitness(self):
-        return np.array([self.func(*position) for position in self.position])
+        return np.array([self.func(*position) for position in self.particleSwarmPosition])
 
     def update_position(self):
-
-        for index, item in enumerate(self.position):
+        for index, singlePosition in enumerate(self.particleSwarmPosition):
             self.velocity[index] = self.w * self.velocity[index] + \
-                                   self.c1 * np.random.random() * (self.pbest[index] - self.position[index]) + \
-                                   self.c2 * np.random.random() * (self.gbest - self.position[index])
+                                   self.c1 * np.random.random() * (self.particleBest[index] - self.particleSwarmPosition[index]) + \
+                                   self.c2 * np.random.random() * (self.globalBest - self.particleSwarmPosition[index])
 
-            self.position[index] = self.position[index] + self.velocity[index]
+            self.particleSwarmPosition[index] = self.particleSwarmPosition[index] + self.velocity[index]
 
-            for i, var in enumerate(item):
+            for i, var in enumerate(singlePosition):
                 if isinstance(self.boundsLists[i], Iterable):
                     if var < self.boundsLists[i][0]:
-                        self.position[index][i] = self.boundsLists[i][0]
+                        self.particleSwarmPosition[index][i] = self.boundsLists[i][0]
                     elif var > self.boundsLists[i][1]:
-                        self.position[index][i] = self.boundsLists[i][1]
+                        self.particleSwarmPosition[index][i] = self.boundsLists[i][1]
                 elif var != self.boundsLists[i]:
-                    self.position[index][i] = self.boundsLists[i]
+                    self.particleSwarmPosition[index][i] = self.boundsLists[i]
+
+            while True:
+                self.velocity[index] = self.w * self.velocity[index] + \
+                                       self.c1 * np.random.random() * (self.particleBest[index] - self.particleSwarmPosition[index]) + \
+                                       self.c2 * np.random.random() * (self.globalBest - self.particleSwarmPosition[index])
+
+                position = self.particleSwarmPosition[index] + self.velocity[index]
+                try:
+                    inspectors(position, self.boundsLists, self.constraintFunction)
+                except ViolatedConstraintError:
+                    continue
+                except IllegalVariableError:
+                    position = self.convert_variable_to_legal(position)
+                break
+            return position
 
     def update_best(self):
-        global_best_fitness = self.func(*self.gbest)
-        person_best_value = np.array([self.func(*particle) for particle in self.pbest])
+        global_best_fitness = self.func(*self.globalBest)
+        person_best_value = np.array([self.func(*particle) for particle in self.particleBest])
 
-        for index, particle in enumerate(self.position):
+        for index, particle in enumerate(self.particleSwarmPosition):
             current_particle_fitness = self.func(*particle)
 
             if current_particle_fitness < person_best_value[index]:
                 person_best_value[index] = current_particle_fitness
-                self.pbest[index] = particle.copy()
+                self.particleBest[index] = particle.copy()
             if current_particle_fitness < global_best_fitness:
                 global_best_fitness = current_particle_fitness
-                self.gbest = particle.copy()
+                self.globalBest = particle.copy()
 
     def pso(self):
         self.update_position()
@@ -95,9 +93,9 @@ class PSO:
         pass
 
     def iterator(self):
-        for _ in range(self.iter_num):
+        for _ in range(self.iterNum):
             self.pso()
-            print(self.gbest, func(*self.gbest))
+            print(self.globalBest, func(*self.globalBest))
 
 
 boundsList = ((-2*math.pi, 2*math.pi), (-2*math.pi, 2*math.pi))

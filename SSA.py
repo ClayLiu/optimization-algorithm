@@ -13,7 +13,7 @@ class SSA:
         self.dimension = len(boundsList)
         self.salpSum = salpSum
         self.iterNum = iterNum
-        self.boundsList = boundsList
+        self.boundsLists = boundsList
         self.salpPositions = np.zeros([self.salpSum, self.dimension])
         self.F = np.zeros([self.dimension])
         self.boundUppers = np.zeros([self.dimension])
@@ -23,41 +23,24 @@ class SSA:
         self.extremum = extremum
         self.init_population()
 
-    def generate_salp(self):
-        while True:
-            singleSalpPosition = []
-            for index, dimensionBounds in enumerate(self.boundsList):
-                if isinstance(dimensionBounds, int):
-                    singleSalpPosition.append(dimensionBounds)
-                else:
-                    singleSalpPosition.append(np.random.rand()*(dimensionBounds[Bounds.upper.value] - dimensionBounds[Bounds.lower.value]) + dimensionBounds[Bounds.lower.value])
-            try:
-                inspectors(singleSalpPosition, self.boundsList, self.constraintFunction)
-            except IllegalVariableError as e:
-                continue
-            except ViolatedConstraintError as e:
-                continue
-            break
-        return singleSalpPosition
-
     def init_population(self):
-        self.salpPositions = generate_population(self.salpSum, self.boundsList, self.constraintFunction)
+        self.salpPositions = generate_population(self.salpSum, self.boundsLists, self.constraintFunction)
         self.get_bounds_lowers()
         self.get_bounds_uppers()
 
     def get_bounds_uppers(self):
-        for index, singlebound in enumerate(self.boundsList):
+        for index, singlebound in enumerate(self.boundsLists):
             if isinstance(singlebound, int):
                 self.boundUppers[index] = singlebound
             else:
-                self.boundUppers[index] = singlebound[Bounds.upper.value]
+                self.boundUppers[index] = singlebound[Bounds().upper]
 
     def get_bounds_lowers(self):
-        for index, singlebound in enumerate(self.boundsList):
+        for index, singlebound in enumerate(self.boundsLists):
             if isinstance(singlebound, int):
                 self.boundLowers[index] = singlebound
             else:
-                self.boundLowers[index] = singlebound[Bounds.lower.value]
+                self.boundLowers[index] = singlebound[Bounds().lower]
 
     def get_fitness(self):
         return np.array([self.objectiveFunction(*position) for position in self.salpPositions])
@@ -71,11 +54,11 @@ class SSA:
                 position = self.F - self.c1 * (
                         (self.boundUppers - self.boundLowers) * np.random.random() + self.boundLowers)
             try:
-                inspectors(position, self.boundsList, self.constraintFunction)
+                inspectors(position, self.boundsLists, self.constraintFunction)
             except ViolatedConstraintError:
                 continue
             except IllegalVariableError:
-                position = self.convert_variable_to_legal(position)
+                position = convert_position_to_legal(position, self.boundsLists)
             break
         return position
 
@@ -83,52 +66,27 @@ class SSA:
         while True:
             position = 0.5 * (currentPosition + lastPosition)
             try:
-                inspectors(position, self.boundsList, self.constraintFunction)
+                inspectors(position, self.boundsLists, self.constraintFunction)
             except ViolatedConstraintError:
                 continue
             except IllegalVariableError:
-                position = self.convert_variable_to_legal(position)
+                position = convert_position_to_legal(position, self.boundsLists)
             break
-        return position
-
-    def convert_variable_to_legal(self, position):
-        for index, var in enumerate(position):
-            if isinstance(self.boundsList[index], int):
-                if var != self.boundsList[index]:
-                    position[index] = self.boundsList[index]
-            else:
-                if var < self.boundLowers[index]:
-                    position[index] = self.boundLowers[index]
-                elif var > self.boundUppers[index]:
-                    position[index] = self.boundUppers[index]
-
         return position
 
     def iteration(self):
         for i in range(self.iterNum):
             print("正在进行第" + str(i+1) + "次")
-            # print("所有坐标: " + str(self.salpPositions))
-            # print("F: " + str(self.F))
             if self.extremum:
                 self.F = self.salpPositions[np.argmax(self.get_fitness()), :].copy()
             else:
                 self.F = self.salpPositions[np.argmin(self.get_fitness()), :].copy()
-
             self.c1 = 2*math.exp(- (4*i / self.iterNum)**2)
-
             for j, position in enumerate(self.salpPositions):
-                # print("单个坐标:"+str(position))
-                # print()
                 if j < self.salpPositions.shape[0] / 2:
                     self.salpPositions[j] = self.update_leader_salp_position()
                 else:
                     self.salpPositions[j] = self.update_follower_salp_position(self.salpPositions[j, :], self.salpPositions[j - 1, :])
-
-            # print("当前最优解: ")
-            # print(self.F)
-            # print("当前适应度: ")
-            # print(self.objectiveFunction(*self.F))
-
 
         print()
         print(str(self.iterNum), "次迭代最优解:")
@@ -152,7 +110,6 @@ constraintFunction = lambda x, y: True
 #     lambda x1, x2, x3, x4: (-math.pi*x4*x3**2) - (4/3) * math.pi*x3**3 + 1296000 <= 0,
 #     lambda x1, x2, x3, x4: x4 - 240 <= 0
 # ]
-
 
 
 salpSum = 30
