@@ -7,45 +7,6 @@ from Common.for_image import get_fig
 from Common.utils import *
 from Common.EnumSet import *
 
-class Bat():
-    def __init__(self, position : np.ndarray, velocity : np.ndarray, f_bound : tuple):
-        
-        self.position = position
-        self.velocity = velocity
-        # self.A = random.random()     # 响度   [0, 1]
-        self.A = 1.0    # A == 1 also can be used
-        self.r = random.random()     # 脉冲率 [0, 1]       
-        self.r_zero = self.r
-
-        self.min_f = f_bound[Bounds.lower]
-        self.max_f = f_bound[Bounds.upper]
-        self.max_min_f = self.max_f - self.min_f
-
-        self.frequency = random.random() * self.max_min_f + self.min_f
-        self.position_new = self.position
-
-    def update_global(self, best_position : np.ndarray):
-        beta = random.random()
-        self.frequency = self.min_f + self.max_min_f * beta
-
-        self.velocity += (self.position - best_position) * self.frequency
-        self.position_new = self.velocity + self.position
-    
-    def search_local(self, ave_A : float) -> np.ndarray:
-        eps = (random.random() * 2 - 1)
-        self.position_new = self.position + eps * ave_A
-
-    def update_A_and_r(self, alpha : float, gamma : float, t : int):
-        self.A *= alpha
-        self.r = self.r_zero * (1 - math.exp(- gamma * t))
-
-    def copy(self):
-        return Bat(
-            self.position.copy(),
-            self.velocity.copy(),
-            self.f_bound
-        )
-
 class BatSwarm():
     def __init__(self, objectiveFunction, constraintFunction, batQuantity, alpha, gamma, x_bounds_list, v_bounds_list, f_bound : tuple):
         """
@@ -111,11 +72,7 @@ class BatSwarm():
         # eps = (random.random() * 2 - 1)           # 同一随机数
         eps = np.random.random(self.x_dim) * 2 - 1  # 不同一随机数
         self.batNewPositions[batIndex] = self.batPositions[batIndex] + eps * AverageLoudness
-
-    def update_A_and_r(self, t : int, batIndex : int):
-        self.A *= alpha
         
-
     def get_fitness(self):
         for batPosition in self.batPositions:
             self.fitness[i] = self.objectiveFunction(*bat.position)
@@ -168,6 +125,3 @@ class BatSwarm():
             best_fitness_value.append(self.fitness[best_bat_index])
         
         return best_position, self.fitness[best_bat_index], best_fitness_value
-
-
-print(Bounds.lower)
