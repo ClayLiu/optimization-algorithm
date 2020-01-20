@@ -75,7 +75,7 @@ class BatSwarm():
         
     def get_fitness(self):
         for batPosition in self.batPositions:
-            self.fitness[i] = self.objectiveFunction(*bat.position)
+            self.fitness[i] = self.objectiveFunction(*batPosition)
 
     def iteration(self, iter_num : int):
         
