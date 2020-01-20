@@ -19,7 +19,7 @@ class Bat():
         self.max_f = f_bound[Bounds.upper]
         self.max_min_f = self.max_f - self.min_f
 
-        self.frequency = random.random() * self.max_min_f + self.min_f
+        self.frequency = 0.0    # 设置初值，随意设置
         self.position_new = self.position
 
     def update_global(self, best_position : np.ndarray):
