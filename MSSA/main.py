@@ -18,7 +18,7 @@ salp_num = 30
 iter_num = 100
 thresh = 100
 mesh_div = 100
-extremum = ["min", "min"]
+extremum = [False, False]
 mssa = mssa.MSSA(func, dim, bounds, salp_num, iter_num, thresh, mesh_div, extremum)
 pareto_in, pareto_fitness = mssa.done()  # 经过iter_num轮迭代后，pareto边界个体
 print("Pareto边界个体:", pareto_in.shape[0], "个")

@@ -60,49 +60,4 @@ class MSSA:
 
     def done(self):
         self.initialize()
-        win = self.vis.scatter(
-            X=self.archive_fitness,
-            opts={
-                'markersize': 5,
-                'markercolor': np.array([[0, 0, 255]]),
-                'title': "pareto边界个体分布"
-            },
-        )
-
-        for i in range(1, self.iter_num + 1):
-            if i % 10 == 0:
-                print("第", i, "次迭代进行中...")
-
-            self.vis.scatter(
-                X=self.fitness,
-                opts={
-                    'markersize': 5,
-                    'markercolor': np.array([[59, 89, 152]]),
-                    'title': "pareto边界个体分布"
-                },
-                win=win,
-                update='append'
-            )
-            self.update(i)
-
-        self.vis.scatter(
-            X=self.archive_fitness,
-            opts={
-                'markersize': 5,
-                'title': "pareto边界个体分布",
-                'markercolor': np.array([[255, 0, 0]]),
-            },
-            update='append',
-            win=win
-        )
-
-        self.vis.scatter(
-            X=self.archive_in,
-            opts={
-                'markersize': 5,
-                # 'markercolor': np.array([[0, 255, 0]]),
-                'title': "可行解分布"
-            },
-        )
-
         return self.archive_in, self.archive_fitness

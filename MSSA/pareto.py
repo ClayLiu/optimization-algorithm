@@ -55,11 +55,10 @@ class Pareto_:
     def compare(self, fitness_curr, fitness_ref):
         # 判断fitness_curr是否可以被fitness_ref完全支配
         for i in range(len(fitness_curr)):
-            assert self.extremum[i] == "min" or self.extremum[i] == "max", "只能指定max或者min"
-            if self.extremum[i] == "min":
-                if fitness_curr[i] < fitness_ref[i]:
+            if self.extremum[i]:
+                if fitness_curr[i] > fitness_ref[i]:
                     return True
             else:
-                if fitness_curr[i] > fitness_ref[i]:
+                if fitness_curr[i] < fitness_ref[i]:
                     return True
         return False
