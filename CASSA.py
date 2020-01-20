@@ -85,10 +85,10 @@ class CASSA:
             c4 = np.random.random()
             if np.random.random() >= 0.5:
                 position = self.F + self.get_p(c4) * self.get_sign(c4) * self.xcraziness * self.c1 * (
-                        (self.boundUppers - self.boundLowers) * np.random.random() + self.boundLowers)
+                        (self.boundUppers - self.boundLowers) * np.random.random(self.dimension) + self.boundLowers)
             else:
                 position = self.F - self.get_p(c4) * self.get_sign(c4) * self.xcraziness * self.c1 * (
-                        (self.boundUppers - self.boundLowers) * np.random.random() + self.boundLowers)
+                        (self.boundUppers - self.boundLowers) * np.random.random(self.dimension) + self.boundLowers)
             try:
                 inspectors(position, self.boundsLists, self.constraintFunction)
             except ViolatedConstraintError:
@@ -140,7 +140,7 @@ objectiveFunction = lambda x, y: x**2 + y**2 + 25 * (math.sin(x) ** 2 + math.sin
 constraintFunction = lambda x, y: True
 
 salp_num = 30
-iter_num = 100
+iter_num = 1000
 
 ssa = CASSA(objectiveFunction, boundsList, constraintFunction, salp_num, iter_num,)
 ssa.iteration()

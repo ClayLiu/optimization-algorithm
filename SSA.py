@@ -49,10 +49,10 @@ class SSA:
         while True:
             if np.random.random() >= 0.5:
                 position = self.F + self.c1 * (
-                        (self.boundUppers - self.boundLowers) * np.random.random() + self.boundLowers)
+                        (self.boundUppers - self.boundLowers) * np.random.random(self.dimension) + self.boundLowers)
             else:
                 position = self.F - self.c1 * (
-                        (self.boundUppers - self.boundLowers) * np.random.random() + self.boundLowers)
+                        (self.boundUppers - self.boundLowers) * np.random.random(self.dimension) + self.boundLowers)
             try:
                 inspectors(position, self.boundsLists, self.constraintFunction)
             except ViolatedConstraintError:
