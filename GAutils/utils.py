@@ -14,6 +14,11 @@ def checkParameters(number, bounds):
             raise IllegalVariableError
 
 
+def interval_length(bounds):
+    """获取区间长度"""
+    return bounds[Bounds.upper] - bounds[Bounds.lower]
+
+
 def decimal_to_binary(number, bounds, decimalDigits = 6):
     """将数字按精度要求转换到二进制数"""
     checkParameters(number, bounds)
@@ -23,34 +28,38 @@ def decimal_to_binary(number, bounds, decimalDigits = 6):
     else:
         # 否则先将区间分成N份，然后将该数字在该区间的为第几份，然后将其转换为二进制数
         digit = number_to_digit(number, bounds, decimalDigits)
-        binary = bin(digit)  # 0b101
-        interval_length = get_interval_length(bounds)
-        binary = binary.replace("0b", "0" * (get_binary_length(interval_length, decimalDigits) - 2))
-    return binary
+        pureBinary = bin(digit).replace("0b", "")  # 0b101
+        intervalLength = interval_length(bounds)
+        print(binary_length(intervalLength, decimalDigits))
+        print(pureBinary)
+        pureBinary = "0" * (binary_length(intervalLength, decimalDigits) - len(pureBinary)) + pureBinary
+    return pureBinary
 
 
 def number_to_digit(number, bounds, decimalDigits):
     """将区间分成n份，获取该数字是其中的第几份"""
-    intervalLength = get_interval_length(bounds)
-    subintervalSum = intervalLength*10**decimalDigits
+    intervalLength = interval_length(bounds)
+    # subintervalSum = 2 ** get_binary_length(intervalLength, decimalDigits)
+    subintervalSum = intervalLength * 10 ** decimalDigits
     precision = intervalLength / subintervalSum
-    return int((number - bounds[Bounds.lower]) / precision)
+    digiit = int((number - bounds[Bounds.lower]) / precision)
+
+    return digiit
 
 
-def get_binary_length(intervalLength, decimalDigits):
-    """获取转换的二进制数的位数"""
+def binary_length(intervalLength, decimalDigits):
+    """获取能表示该最大份数的二进制数的位数"""
     digitSum = intervalLength*10**decimalDigits + 1
-    n = 2
-    binaryLength = 1
-    while True:
-        if digitSum < n:
-            break
-        else:
-            n = n << 1
-            binaryLength = binaryLength + 1
+    # n = 1
+    # binaryLength = 1
+    # while True:
+    #     if n > digitSum:
+    #         break
+    #     else:
+    #         n = n + (n << 1)
+    #         binaryLength = binaryLength + 1
+    binaryLength = len(bin(digitSum).replace("0b", ""))
     return binaryLength
 
 
-def get_interval_length(bounds):
-    """获取区间长度"""
-    return bounds[Bounds.upper] - bounds[Bounds.lower]
+
