@@ -30,8 +30,6 @@ def decimal_to_binary(number, bounds, decimalDigits = 6):
         digit = number_to_digit(number, bounds, decimalDigits)
         pureBinary = bin(digit).replace("0b", "")  # 0b101
         intervalLength = interval_length(bounds)
-        print(binary_length(intervalLength, decimalDigits))
-        print(pureBinary)
         pureBinary = "0" * (binary_length(intervalLength, decimalDigits) - len(pureBinary)) + pureBinary
     return pureBinary
 
@@ -39,7 +37,6 @@ def decimal_to_binary(number, bounds, decimalDigits = 6):
 def number_to_digit(number, bounds, decimalDigits):
     """将区间分成n份，获取该数字是其中的第几份"""
     intervalLength = interval_length(bounds)
-    # subintervalSum = 2 ** get_binary_length(intervalLength, decimalDigits)
     subintervalSum = intervalLength * 10 ** decimalDigits
     precision = intervalLength / subintervalSum
     digiit = int((number - bounds[Bounds.lower]) / precision)
@@ -50,14 +47,6 @@ def number_to_digit(number, bounds, decimalDigits):
 def binary_length(intervalLength, decimalDigits):
     """获取能表示该最大份数的二进制数的位数"""
     digitSum = intervalLength*10**decimalDigits + 1
-    # n = 1
-    # binaryLength = 1
-    # while True:
-    #     if n > digitSum:
-    #         break
-    #     else:
-    #         n = n + (n << 1)
-    #         binaryLength = binaryLength + 1
     binaryLength = len(bin(digitSum).replace("0b", ""))
     return binaryLength
 

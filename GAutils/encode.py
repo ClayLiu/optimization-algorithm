@@ -10,6 +10,14 @@ def binaryEncode(number, bounds, decimalDigits = 6):
     """
     return decimal_to_binary(number, bounds, decimalDigits)
 
-a = binaryEncode(97,[-10,99])
-print("整合后：", a)
-print("整合后长度：", len(a))
+
+def grayEncode(number, bounds, decimalDigits = 6):
+    binary = int("0b" + binaryEncode(number, bounds, decimalDigits), 2)
+    print("binary:"+bin(binary))
+    gray = binary ^ (binary >> 1)
+    grayString = bin(gray).replace("0b", "")
+    return grayString
+
+
+print("gray:"+grayEncode(3.111111, [0, 99]))
+

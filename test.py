@@ -10,5 +10,6 @@ def decode(interval, chromosome):
     n = float(2 ** 24 - 1)
     return (interval[0] + chromosome * d / n)
 
-print(bin(7))
+# print(bin(7))
+print(int("000101111000011010111100110",2))
 

@@ -17,14 +17,14 @@
     <SUITE FILE_PATH="coverage/optimization_algorithm$test1.coverage" NAME="test1 Coverage Results" MODIFIED="1579333636768" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/optimization_algorithm$test__1_.coverage" NAME="test (1) Coverage Results" MODIFIED="1579403226582" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/optimization_algorithm$SSA.coverage" NAME="SSA Coverage Results" MODIFIED="1579483394141" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/optimization_algorithm$utils.coverage" NAME="utils Coverage Results" MODIFIED="1579618936697" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GAutils" />
+    <SUITE FILE_PATH="coverage/optimization_algorithm$utils.coverage" NAME="utils Coverage Results" MODIFIED="1579693314496" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GAutils" />
     <SUITE FILE_PATH="coverage/optimization_algorithm$OriginSSA.coverage" NAME="OriginSSA Coverage Results" MODIFIED="1579406115976" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/optimization_algorithm$PSO.coverage" NAME="PSO Coverage Results" MODIFIED="1579436073950" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/optimization_algorithm$test.coverage" NAME="test Coverage Results" MODIFIED="1579619328678" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/optimization_algorithm$test.coverage" NAME="test Coverage Results" MODIFIED="1579693670458" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/optimization_algorithm$CASSA.coverage" NAME="CASSA Coverage Results" MODIFIED="1579486097870" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/optimization_algorithm$decode.coverage" NAME="decode Coverage Results" MODIFIED="1579619951597" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GAutils" />
+    <SUITE FILE_PATH="coverage/optimization_algorithm$decode.coverage" NAME="decode Coverage Results" MODIFIED="1579701163151" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GAutils" />
     <SUITE FILE_PATH="coverage/optimization_algorithm$GA.coverage" NAME="GA Coverage Results" MODIFIED="1579492155993" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/optimization_algorithm$encode.coverage" NAME="encode Coverage Results" MODIFIED="1579619923294" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GAutils" />
+    <SUITE FILE_PATH="coverage/optimization_algorithm$encode.coverage" NAME="encode Coverage Results" MODIFIED="1579700868886" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GAutils" />
   </component>
   <component name="FUSProjectUsageTrigger">
     <session id="-817658097">
@@ -49,13 +49,13 @@
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="dummy" value="14" />
-          <entry key="py" value="8327" />
+          <entry key="py" value="9194" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="PLAIN_TEXT" value="14" />
-          <entry key="Python" value="8327" />
+          <entry key="Python" value="9194" />
         </counts>
       </usages-collector>
     </session>
@@ -74,27 +74,31 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/GAutils/encode.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="15" lean-forward="true" selection-start-line="15" selection-end-line="15" />
+            <state relative-caret-position="289">
+              <caret line="17" column="44" lean-forward="true" selection-start-line="17" selection-start-column="44" selection-end-line="17" selection-end-column="44" />
+              <folding>
+                <marker date="1579700692929" expanded="true" signature="356:357" ph="..." />
+                <marker date="1579700692929" expanded="true" signature="356:361" ph="..." />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/GAutils/utils.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="276">
-              <caret line="52" column="9" lean-forward="true" selection-start-line="52" selection-start-column="9" selection-end-line="52" selection-end-column="9" />
+            <state relative-caret-position="119">
+              <caret line="7" column="33" selection-start-line="7" selection-start-column="25" selection-end-line="7" selection-end-column="33" />
               <folding>
                 <element signature="e#0#28#0" expanded="true" />
-                <marker date="1579618936691" expanded="true" signature="118:446" ph="..." />
-                <marker date="1579618936691" expanded="true" signature="447:448" ph="..." />
-                <marker date="1579618936691" expanded="true" signature="634:797" ph="..." />
-                <marker date="1579618936691" expanded="true" signature="1611:1632" ph="..." />
-                <marker date="1579618936691" expanded="true" signature="1710:2024" ph="..." />
+                <marker date="1579697674278" expanded="true" signature="118:446" ph="..." />
+                <marker date="1579697674278" expanded="true" signature="447:448" ph="..." />
+                <marker date="1579697674278" expanded="true" signature="634:797" ph="..." />
+                <marker date="1579697674278" expanded="true" signature="1448:1469" ph="..." />
+                <marker date="1579697674278" expanded="true" signature="1547:1682" ph="..." />
               </folding>
             </state>
           </provider>
@@ -103,12 +107,12 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/GAutils/decode.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="8" column="40" lean-forward="true" selection-start-line="8" selection-start-column="40" selection-end-line="8" selection-end-column="40" />
+            <state relative-caret-position="255">
+              <caret line="15" column="32" lean-forward="true" selection-start-line="15" selection-start-column="32" selection-end-line="15" selection-end-column="32" />
               <folding>
                 <element signature="e#0#28#0" expanded="true" />
-                <marker date="1579617172784" expanded="true" signature="136:137" ph="..." />
-                <marker date="1579617172784" expanded="true" signature="136:375" ph="..." />
+                <marker date="1579701163147" expanded="true" signature="136:137" ph="..." />
+                <marker date="1579701163147" expanded="true" signature="419:756" ph="..." />
               </folding>
             </state>
           </provider>
@@ -117,8 +121,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/test.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="238">
-              <caret line="14" lean-forward="true" selection-start-line="14" selection-end-line="14" />
+            <state relative-caret-position="255">
+              <caret line="15" lean-forward="true" selection-start-line="15" selection-end-line="15" />
               <folding>
                 <element signature="e#0#26#0" expanded="true" />
               </folding>
@@ -259,10 +263,10 @@
         <option value="$PROJECT_DIR$/MSSA/update.py" />
         <option value="$PROJECT_DIR$/GA.py" />
         <option value="$PROJECT_DIR$/Common/EnumSet.py" />
-        <option value="$PROJECT_DIR$/GAutils/decode.py" />
+        <option value="$PROJECT_DIR$/test.py" />
         <option value="$PROJECT_DIR$/GAutils/utils.py" />
         <option value="$PROJECT_DIR$/GAutils/encode.py" />
-        <option value="$PROJECT_DIR$/test.py" />
+        <option value="$PROJECT_DIR$/GAutils/decode.py" />
       </list>
     </option>
   </component>
@@ -718,46 +722,50 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/GAutils/decode.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="8" column="40" lean-forward="true" selection-start-line="8" selection-start-column="40" selection-end-line="8" selection-end-column="40" />
-          <folding>
-            <element signature="e#0#28#0" expanded="true" />
-            <marker date="1579617172784" expanded="true" signature="136:137" ph="..." />
-            <marker date="1579617172784" expanded="true" signature="136:375" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/test.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="14" lean-forward="true" selection-start-line="14" selection-end-line="14" />
+        <state relative-caret-position="255">
+          <caret line="15" lean-forward="true" selection-start-line="15" selection-end-line="15" />
           <folding>
             <element signature="e#0#26#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/GAutils/encode.py">
+    <entry file="file://$PROJECT_DIR$/GAutils/utils.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="15" lean-forward="true" selection-start-line="15" selection-end-line="15" />
+        <state relative-caret-position="119">
+          <caret line="7" column="33" selection-start-line="7" selection-start-column="25" selection-end-line="7" selection-end-column="33" />
+          <folding>
+            <element signature="e#0#28#0" expanded="true" />
+            <marker date="1579697674278" expanded="true" signature="118:446" ph="..." />
+            <marker date="1579697674278" expanded="true" signature="447:448" ph="..." />
+            <marker date="1579697674278" expanded="true" signature="634:797" ph="..." />
+            <marker date="1579697674278" expanded="true" signature="1448:1469" ph="..." />
+            <marker date="1579697674278" expanded="true" signature="1547:1682" ph="..." />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/GAutils/utils.py">
+    <entry file="file://$PROJECT_DIR$/GAutils/decode.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="276">
-          <caret line="52" column="9" lean-forward="true" selection-start-line="52" selection-start-column="9" selection-end-line="52" selection-end-column="9" />
+        <state relative-caret-position="255">
+          <caret line="15" column="32" lean-forward="true" selection-start-line="15" selection-start-column="32" selection-end-line="15" selection-end-column="32" />
           <folding>
             <element signature="e#0#28#0" expanded="true" />
-            <marker date="1579618936691" expanded="true" signature="118:446" ph="..." />
-            <marker date="1579618936691" expanded="true" signature="447:448" ph="..." />
-            <marker date="1579618936691" expanded="true" signature="634:797" ph="..." />
-            <marker date="1579618936691" expanded="true" signature="1611:1632" ph="..." />
-            <marker date="1579618936691" expanded="true" signature="1710:2024" ph="..." />
+            <marker date="1579701163147" expanded="true" signature="136:137" ph="..." />
+            <marker date="1579701163147" expanded="true" signature="419:756" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/GAutils/encode.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="289">
+          <caret line="17" column="44" lean-forward="true" selection-start-line="17" selection-start-column="44" selection-end-line="17" selection-end-column="44" />
+          <folding>
+            <marker date="1579700692929" expanded="true" signature="356:357" ph="..." />
+            <marker date="1579700692929" expanded="true" signature="356:361" ph="..." />
           </folding>
         </state>
       </provider>
