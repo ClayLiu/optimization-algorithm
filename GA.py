@@ -1,33 +1,29 @@
 import math
-import random
+import numpy as np
+from Common.utils import *
 
 
 class Population:
     # 种群的设计
-    def __init__(self, size, chrom_size, cp, mp, gen_max):
-        # 种群信息合
-        self.individuals = []  # 个体集合
-        self.fitness = []  # 个体适应度集
-        self.selector_probability = []  # 个体选择概率集合
-        self.new_individuals = []  # 新一代个体集合
+    def __init__(self, populationSize, crossoverProbability, mutatioProbability, generationSize,
+                 decimalDigits, objectiveFunction, boundsList, constraintFunction, extremum=False):
+        self.population = []
+        self.fitness = []
+        self.selector_probability = []
+        self.newPopulation = []
+        self.decimalDigits = decimalDigits
+        self.objectiveFunction = objectiveFunction
+        self.boundsList = boundsList
+        self.constraintFunction = constraintFunction
+        self.extremum = extremum
+        self.populationSize = populationSize
+        self.crossoverProbability = crossoverProbability
+        self.mutationProbability = mutatioProbability
+        self.generation_max = generationSize
 
-        self.elitist = {'chromosome': [0, 0], 'fitness': 0, 'age': 0}  # 最佳个体的信息
-
-        self.size = size  # 种群所包含的个体数
-        self.chromosome_size = chrom_size  # 个体的染色体长度
-        self.crossover_probability = cp  # 个体之间的交叉概率
-        self.mutation_probability = mp  # 个体之间的变异概率
-
-        self.generation_max = gen_max  # 种群进化的最大世代数
-        self.age = 0  # 种群当前所处世代
-
-        # 随机产生初始个体集，并将新一代个体、适应度、选择概率等集合以 0 值进行初始化
-        v = 2 ** self.chromosome_size - 1
-        for i in range(self.size):
-            self.individuals.append([random.randint(0, v), random.randint(0, v)])
-            self.new_individuals.append([0, 0])
-            self.fitness.append(0)
-            self.selector_probability.append(0)
+    def init_population(self):
+        population = generate_population(self.populationSize, self.boundsList, self.constraintFunction)
+        
 
     # 基于轮盘赌博机的选择
     def decode(self, interval, chromosome):

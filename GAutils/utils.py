@@ -24,14 +24,14 @@ def decimal_to_binary(number, bounds, decimalDigits = 6):
     checkParameters(number, bounds)
     if isinstance(bounds, int):
         # 如果区间是数字，则该变量恒定为一个值，则直接转换为二进制数，不做处理
-        return bin(number).replace("0b", "")
+        return int(number, 2)
     else:
         # 否则先将区间分成N份，然后将该数字在该区间的为第几份，然后将其转换为二进制数
         digit = number_to_digit(number, bounds, decimalDigits)
-        pureBinary = bin(digit).replace("0b", "")  # 0b101
+        pureBinary = toString(digit)  # 0b101
         intervalLength = interval_length(bounds)
         pureBinary = "0" * (binary_length(intervalLength, decimalDigits) - len(pureBinary)) + pureBinary
-    return pureBinary
+    return int(pureBinary, 2)
 
 
 def number_to_digit(number, bounds, decimalDigits):
@@ -47,8 +47,13 @@ def number_to_digit(number, bounds, decimalDigits):
 def binary_length(intervalLength, decimalDigits):
     """获取能表示该最大份数的二进制数的位数"""
     digitSum = intervalLength*10**decimalDigits + 1
-    binaryLength = len(bin(digitSum).replace("0b", ""))
+    binaryLength = len(toString(digitSum))
     return binaryLength
 
 
+def toString(binary):
+    return bin(binary).replace("0b", "")
 
+
+def toBinary(String):
+    return int("0b" + String, 2)

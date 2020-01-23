@@ -21,5 +21,3 @@ def grayDecode(grayString, bounds, decimalDigits = 6):
             else:
                 binaryString = binaryString + "1"
     return binaryDecode(binaryString, bounds, decimalDigits)
-
-print(grayDecode("1110001100010010100100",[0,99]))

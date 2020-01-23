@@ -12,12 +12,9 @@ def binaryEncode(number, bounds, decimalDigits = 6):
 
 
 def grayEncode(number, bounds, decimalDigits = 6):
-    binary = int("0b" + binaryEncode(number, bounds, decimalDigits), 2)
-    print("binary:"+bin(binary))
+    binary = binaryEncode(number, bounds, decimalDigits)
     gray = binary ^ (binary >> 1)
-    grayString = bin(gray).replace("0b", "")
-    return grayString
+    return gray
 
 
-print("gray:"+grayEncode(3.111111, [0, 99]))
-
+print("gray:", grayEncode(98.123456, [0, 99]))
