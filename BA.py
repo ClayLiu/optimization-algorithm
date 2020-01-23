@@ -79,11 +79,11 @@ class BatSwarm():
 
     def iteration(self, iter_num : int):
         
-        best_fitness_value = []
+        best_fitness_value_history = []
         
         self.get_fitness()
         best_bat_index = np.argmin(self.fitness)
-        best_fitness_value.append(self.fitness[best_bat_index])
+        best_fitness_value_history.append(self.fitness[best_bat_index])
         best_position = self.batPositions[best_bat_index]
         print(best_position, self.fitness[best_bat_index])
 
@@ -122,6 +122,6 @@ class BatSwarm():
                             self.batPulseRate[i] = self.batPulseRate_zero[i] * (1 - math.exp(- self.gamma * t))
 
             best_bat_index = np.argmin(self.fitness)
-            best_fitness_value.append(self.fitness[best_bat_index])
+            best_fitness_value_history.append(self.fitness[best_bat_index])
         
-        return best_position, self.fitness[best_bat_index], best_fitness_value
+        return best_position, self.fitness[best_bat_index], best_fitness_value_history
