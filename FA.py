@@ -6,6 +6,7 @@ from Common.for_image import get_fig
 from Common.utils import *
 from Exceptions.Errors import *
 
+SUPER_HUGE_NUM = 999999999999999999999999.0
 
 def __get_o_distance__(vector_1 : np.ndarray, vector_2 : np.ndarray):
     return np.sqrt(np.sum((vector_1 - vector_2) ** 2))
@@ -51,7 +52,7 @@ class FireflySwarm():
 
 
     def get_brightness(self):
-        for fireflyPosition in self.fireflyBrightness:
+        for i, fireflyPosition in enumerate(self.fireflyPositions):
             self.fireflyBrightness[i] = self.objectiveFunction(*fireflyPosition)
 
 
@@ -62,6 +63,7 @@ class FireflySwarm():
         每一列为萤火虫所看到的相对亮度值\n
         结果保存至 self.fireflyRelativeBrightness\n
         """
+        self.fireflyRelativeBrightness -= self.fireflyRelativeBrightness + SUPER_HUGE_NUM # 全阵置超小值
         for i in range(0, self.fireflyQuantity - 1):
             for j in range(i + 1, self.fireflyQuantity):
                 firefly_i_j_distance = self.fireflyDistance[i][j]
@@ -73,27 +75,27 @@ class FireflySwarm():
                     relativeBrightness = self.relativeBrightnessFormula(self.fireflyBrightness[j], firefly_i_j_distance)
                     self.fireflyRelativeBrightness[j][i] = relativeBrightness
         
-        # i 不够 j 亮，则设为负值
-        self.fireflyRelativeBrightness -= self.fireflyRelativeBrightness.transpose()
-
-    
+        
     def iteration(self, iter_num : int):
+        best_brightness_value_history = []
         for t in range(0, iter_num + 1):
             self.get_brightness()
             self.get_fireflyDistance()
             self.get_relativeBrightness()
+
+            best_brightness_value_history.append(np.max(self.fireflyBrightness))
 
             for i in range(0, self.fireflyQuantity):
                 firefly_i_see = self.fireflyRelativeBrightness[:, i]
                 firefly_i_see_argsorted = np.argsort(firefly_i_see)
                 brightest_i_see_index = firefly_i_see_argsorted[0]  # i 所看到相对亮度最大的萤火虫的索引
                 
-                # i 所看到的相对亮度最大的都为负值的话，说明 i 是这个种群中最亮的
-                if firefly_i_see[brightest_i_see_index] < 0:    # 最亮者，随机游走
+                # 如果 i 没有看到比它更亮的，说明它是最亮的
+                if self.fireflyBrightness[brightest_i_see_index] == - SUPER_HUGE_NUM:       # 最亮者，随机游走
                     self.fireflyPositions_new[i] += self.alpha * (random.random() - 0.5)
-                else:                                           # 其他亮者，被牵着走
+                else:                                                                               # 其他亮者，被牵着走
                     for index in firefly_i_see_argsorted:
-                        if firefly_i_see[index] > 0:
+                        if self.fireflyBrightness[index] > self.fireflyBrightness[i]:
                             attractiveness = self.attractivenessFormula(self.fireflyDistance[i][index])
                             self.fireflyPositions_new[i] += attractiveness * (self.fireflyPositions[index] - self.fireflyPositions[i]) + self.alpha * (random.random() - 0.5)
                         else:
@@ -108,7 +110,21 @@ class FireflySwarm():
             self.fireflyPositions = self.fireflyPositions_new.copy()
 
         self.get_brightness()
-        best_firefly_index = np.argmin(self.fireflyBrightness)
+        best_brightness_value_history.append(np.max(self.fireflyBrightness))
+        best_firefly_index = np.argmax(self.fireflyBrightness)
         best_position = self.fireflyPositions[best_firefly_index]
         best_brightness = self.fireflyBrightness[best_firefly_index]
-        return best_position, best_brightness
+        return best_position, best_brightness, best_brightness_value_history
+
+if __name__ == '__main__':
+    t2_f = lambda x, y : - (x**2 + y**2 + 25 * (math.sin(x) ** 2 + math.sin(y) ** 2))
+    x_bound = [
+        (-2 * math.pi, 2 * math.pi),
+        (-2 * math.pi, 2 * math.pi)
+    ]
+    no_con = lambda x, y : True
+    test = FireflySwarm(t2_f, no_con, 100, x_bound, 0.02, 1.0, 1.0)
+    best_position, best_brightness, best_brightness_value_history = test.iteration(200)
+    print(best_position, best_brightness)
+    # print(best_brightness_value_history)
+    get_fig(best_brightness_value_history, 'FA_result.png')
