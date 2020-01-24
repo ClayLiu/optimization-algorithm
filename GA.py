@@ -136,7 +136,7 @@ class GA:
                 newIndividual1.append(chrom1)
                 newIndividual2.append(chrom2)
 
-            # TO-DO 上下限控制
+                # TO-DO 上下限控制
 
             newPopulation.append(newIndividual1)
             newPopulation.append(newIndividual2)
