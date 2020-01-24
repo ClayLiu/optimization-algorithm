@@ -28,7 +28,7 @@ def decimal_to_binary(number, bounds, decimalDigits = 6):
     else:
         # 否则先将区间分成N份，然后将该数字在该区间的为第几份，然后将其转换为二进制数
         digit = number_to_digit(number, bounds, decimalDigits)
-        pureBinary = toString(digit)  # 0b101
+        pureBinary = numberToBinaryString(digit)  # 0b101
         intervalLength = interval_length(bounds)
         pureBinary = "0" * (binary_length(intervalLength, decimalDigits) - len(pureBinary)) + pureBinary
     return int(pureBinary, 2)
@@ -39,21 +39,36 @@ def number_to_digit(number, bounds, decimalDigits):
     intervalLength = interval_length(bounds)
     subintervalSum = intervalLength * 10 ** decimalDigits
     precision = intervalLength / subintervalSum
-    digiit = int((number - bounds[Bounds.lower]) / precision)
+    digit = int((number - bounds[Bounds.lower]) / precision)
 
-    return digiit
+    return digit
 
 
 def binary_length(intervalLength, decimalDigits):
     """获取能表示该最大份数的二进制数的位数"""
-    digitSum = intervalLength*10**decimalDigits + 1
-    binaryLength = len(toString(digitSum))
+    digitSum = int(intervalLength*10**decimalDigits + 1)
+    binaryLength = len(numberToBinaryString(digitSum))
     return binaryLength
 
 
-def toString(binary):
+def numberToBinaryString(binary):
     return bin(binary).replace("0b", "")
 
 
-def toBinary(String):
-    return int("0b" + String, 2)
+def shear(chromosome, start, end):
+    """染色体剪切: [start,end), 染色体首位下标为1"""
+    chromosomeLength = len(bin(chromosome).replace("0b", ""))
+    m = 2 ** chromosomeLength - 1
+    leftZeros = start - 1
+    rightZeros = chromosomeLength - end
+    mask = (m >> (leftZeros + rightZeros + 1))
+    mask = mask << (leftZeros + 1)
+    return chromosome & mask
+
+
+def splicing(*chromosomes):
+    """染色体拼接"""
+    finalChromosome = 0
+    for chromosome in chromosomes:
+        finalChromosome = finalChromosome + chromosome
+    return finalChromosome

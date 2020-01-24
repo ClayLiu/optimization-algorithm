@@ -17,4 +17,12 @@ def grayEncode(number, bounds, decimalDigits = 6):
     return gray
 
 
-print("gray:", grayEncode(98.123456, [0, 99]))
+def grayEncodeForList(numberList, boundsList, decimalDigits = 6):
+    grayEncodeList = []
+    if isinstance(numberList, list) or isinstance(numberList, tuple):
+        for i, number in enumerate(numberList):
+            grayEncodeList.append(grayEncode(number, boundsList[i], decimalDigits))
+    else:
+        raise TypeError("参数类型错误！")
+
+    return grayEncodeList

@@ -3,10 +3,13 @@
   <component name="ChangeListManager">
     <list default="true" id="94656ace-cf23-4ebd-9dd7-ff66b195af94" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Common/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/Common/utils.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FA.py" beforeDir="false" afterPath="$PROJECT_DIR$/FA.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GA.py" beforeDir="false" afterPath="$PROJECT_DIR$/GA.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GAutils/decode.py" beforeDir="false" afterPath="$PROJECT_DIR$/GAutils/decode.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GAutils/encode.py" beforeDir="false" afterPath="$PROJECT_DIR$/GAutils/encode.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GAutils/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/GAutils/utils.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PSO.py" beforeDir="false" afterPath="$PROJECT_DIR$/PSO.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/test.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -22,11 +25,11 @@
     <SUITE FILE_PATH="coverage/optimization_algorithm$utils.coverage" NAME="utils Coverage Results" MODIFIED="1579693314496" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GAutils" />
     <SUITE FILE_PATH="coverage/optimization_algorithm$OriginSSA.coverage" NAME="OriginSSA Coverage Results" MODIFIED="1579406115976" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/optimization_algorithm$PSO.coverage" NAME="PSO Coverage Results" MODIFIED="1579436073950" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/optimization_algorithm$test.coverage" NAME="test Coverage Results" MODIFIED="1579780642860" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/optimization_algorithm$test.coverage" NAME="test Coverage Results" MODIFIED="1579864336500" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/optimization_algorithm$CASSA.coverage" NAME="CASSA Coverage Results" MODIFIED="1579486097870" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/optimization_algorithm$decode.coverage" NAME="decode Coverage Results" MODIFIED="1579701163151" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GAutils" />
-    <SUITE FILE_PATH="coverage/optimization_algorithm$GA.coverage" NAME="GA Coverage Results" MODIFIED="1579492155993" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/optimization_algorithm$encode.coverage" NAME="encode Coverage Results" MODIFIED="1579777971618" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GAutils" />
+    <SUITE FILE_PATH="coverage/optimization_algorithm$GA.coverage" NAME="GA Coverage Results" MODIFIED="1579870393077" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="FUSProjectUsageTrigger">
     <session id="-817658097">
@@ -38,26 +41,26 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="LICENSE" value="3" />
-          <entry key="py" value="46" />
+          <entry key="LICENSE" value="4" />
+          <entry key="py" value="56" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="PLAIN_TEXT" value="3" />
-          <entry key="Python" value="46" />
+          <entry key="PLAIN_TEXT" value="4" />
+          <entry key="Python" value="56" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="dummy" value="14" />
-          <entry key="py" value="9792" />
+          <entry key="py" value="14332" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="PLAIN_TEXT" value="14" />
-          <entry key="Python" value="9792" />
+          <entry key="Python" value="14332" />
         </counts>
       </usages-collector>
     </session>
@@ -67,36 +70,16 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/GA.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="235">
-              <caret line="25" column="8" selection-start-line="25" selection-start-column="8" selection-end-line="25" selection-end-column="8" />
+            <state relative-caret-position="2346">
+              <caret line="138" column="23" selection-start-line="138" selection-start-column="23" selection-end-line="138" selection-end-column="23" />
               <folding>
                 <element signature="e#0#11#0" expanded="true" />
-                <marker date="1579780790672" expanded="true" signature="862:981" ph="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Common/utils.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="257">
-              <caret line="46" lean-forward="true" selection-start-line="46" selection-end-line="46" />
-              <folding>
-                <element signature="e#0#30#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/GAutils/encode.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="340">
-              <caret line="20" lean-forward="true" selection-start-line="20" selection-end-line="20" />
-              <folding>
-                <marker date="1579777971613" expanded="true" signature="356:357" ph="..." />
-                <marker date="1579777971613" expanded="true" signature="356:361" ph="..." />
+                <marker date="1579870442076" expanded="true" signature="1151:1493" ph="..." />
+                <marker date="1579870442076" expanded="true" signature="1520:1525" ph="..." />
+                <marker date="1579870442076" expanded="true" signature="1989:2310" ph="..." />
+                <marker date="1579870442076" expanded="true" signature="2438:3283" ph="..." />
+                <marker date="1579870442076" expanded="true" signature="3600:4112" ph="..." />
+                <marker date="1579870442076" expanded="true" signature="4160:4226" ph="..." />
               </folding>
             </state>
           </provider>
@@ -105,30 +88,28 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/GAutils/utils.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-10">
-              <caret line="35" lean-forward="true" selection-start-line="35" selection-end-line="35" />
+            <state relative-caret-position="818">
+              <caret line="62" column="39" lean-forward="true" selection-start-line="62" selection-start-column="39" selection-end-line="62" selection-end-column="39" />
               <folding>
                 <element signature="e#0#28#0" expanded="true" />
-                <marker date="1579746854875" expanded="true" signature="118:446" ph="..." />
-                <marker date="1579746854875" expanded="true" signature="447:448" ph="..." />
-                <marker date="1579746854875" expanded="true" signature="634:782" ph="..." />
-                <marker date="1579746854875" expanded="true" signature="1428:1449" ph="..." />
-                <marker date="1579746854875" expanded="true" signature="1527:1712" ph="..." />
-                <marker date="1579746854875" expanded="true" signature="1735:1740" ph="..." />
+                <marker date="1579852702674" expanded="true" signature="118:446" ph="..." />
+                <marker date="1579852702674" expanded="true" signature="447:448" ph="..." />
+                <marker date="1579852702674" expanded="true" signature="634:782" ph="..." />
+                <marker date="1579852702674" expanded="true" signature="1439:1459" ph="..." />
+                <marker date="1579852702674" expanded="true" signature="1537:1751" ph="..." />
+                <marker date="1579852702674" expanded="true" signature="2170:2260" ph="..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/GAutils/decode.py">
+        <entry file="file://$PROJECT_DIR$/Common/utils.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="391">
-              <caret line="23" selection-start-line="23" selection-end-line="23" />
+            <state relative-caret-position="388">
+              <caret line="26" column="33" selection-start-line="26" selection-start-column="33" selection-end-line="26" selection-end-column="33" />
               <folding>
-                <element signature="e#0#28#0" expanded="true" />
-                <marker date="1579775877578" expanded="true" signature="136:137" ph="..." />
-                <marker date="1579775877578" expanded="true" signature="419:755" ph="..." />
+                <element signature="e#0#30#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -137,8 +118,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/test.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="323">
-              <caret line="19" column="10" lean-forward="true" selection-start-line="19" selection-start-column="10" selection-end-line="19" selection-end-column="10" />
+            <state relative-caret-position="289">
+              <caret line="17" column="13" selection-start-line="17" selection-start-column="13" selection-end-line="17" selection-end-column="13" />
               <folding>
                 <element signature="e#0#26#0" expanded="true" />
               </folding>
@@ -147,18 +128,38 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Exceptions/Errors.py">
+        <entry file="file://$PROJECT_DIR$/GAutils/encode.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret column="26" selection-start-column="6" selection-end-column="26" />
+            <state relative-caret-position="323">
+              <caret line="19" column="65" selection-start-line="19" selection-start-column="65" selection-end-line="19" selection-end-column="65" />
+              <folding>
+                <marker date="1579838779609" expanded="true" signature="356:357" ph="..." />
+                <marker date="1579838779609" expanded="true" signature="356:361" ph="..." />
+                <marker date="1579838779609" expanded="true" signature="555:829" ph="..." />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Common/for_image.py">
+        <entry file="file://$PROJECT_DIR$/GAutils/decode.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state>
+            <state relative-caret-position="442">
+              <caret line="26" column="22" selection-start-line="26" selection-start-column="4" selection-end-line="26" selection-end-column="22" />
+              <folding>
+                <element signature="e#0#28#0" expanded="true" />
+                <marker date="1579840906823" expanded="true" signature="375:791" ph="..." />
+                <marker date="1579840906823" expanded="true" signature="954:959" ph="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/SSA.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="294">
+              <caret line="73" column="17" lean-forward="true" selection-start-line="67" selection-start-column="11" selection-end-line="73" selection-end-column="17" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
               </folding>
@@ -167,19 +168,34 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/CASSA.py">
+        <entry file="file://$PROJECT_DIR$/PSO.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-502">
-              <caret line="3" selection-start-line="3" selection-end-line="3" selection-end-column="26" />
+            <state relative-caret-position="17">
+              <caret line="66" column="68" selection-start-line="66" selection-start-column="68" selection-end-line="66" selection-end-column="68" />
+              <folding>
+                <element signature="e#0#18#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/SSA.py">
+        <entry file="file://$PROJECT_DIR$/FA.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-24">
-              <caret line="14" column="30" lean-forward="true" selection-start-line="14" selection-start-column="30" selection-end-line="14" selection-end-column="30" />
+            <state relative-caret-position="2045">
+              <caret line="127" selection-start-line="127" selection-end-line="127" />
+              <folding>
+                <element signature="e#0#11#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/CASSA.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="8">
+              <caret line="90" column="95" selection-start-line="90" selection-start-column="95" selection-end-line="90" selection-end-column="95" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
               </folding>
@@ -256,20 +272,21 @@
         <option value="$PROJECT_DIR$/Exceptions/Errors.py" />
         <option value="$PROJECT_DIR$/OriginSSA.py" />
         <option value="$PROJECT_DIR$/BA.py" />
-        <option value="$PROJECT_DIR$/Common/utils.py" />
-        <option value="$PROJECT_DIR$/PSO.py" />
         <option value="$PROJECT_DIR$/BSSA.py" />
         <option value="$PROJECT_DIR$/SSA.py" />
-        <option value="$PROJECT_DIR$/CASSA.py" />
         <option value="$PROJECT_DIR$/MSSA/mssa.py" />
         <option value="$PROJECT_DIR$/MSSA/main.py" />
         <option value="$PROJECT_DIR$/MSSA/pareto.py" />
         <option value="$PROJECT_DIR$/MSSA/update.py" />
         <option value="$PROJECT_DIR$/Common/EnumSet.py" />
-        <option value="$PROJECT_DIR$/GAutils/utils.py" />
-        <option value="$PROJECT_DIR$/GAutils/decode.py" />
+        <option value="$PROJECT_DIR$/Common/utils.py" />
         <option value="$PROJECT_DIR$/GAutils/encode.py" />
+        <option value="$PROJECT_DIR$/GAutils/decode.py" />
+        <option value="$PROJECT_DIR$/GAutils/utils.py" />
+        <option value="$PROJECT_DIR$/PSO.py" />
         <option value="$PROJECT_DIR$/test.py" />
+        <option value="$PROJECT_DIR$/CASSA.py" />
+        <option value="$PROJECT_DIR$/FA.py" />
         <option value="$PROJECT_DIR$/GA.py" />
       </list>
     </option>
@@ -350,7 +367,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.test">
+  <component name="RunManager" selected="Python.GA">
     <configuration name="GA" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="optimization-algorithm" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -470,11 +487,11 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.GA" />
         <item itemvalue="Python.test" />
         <item itemvalue="Python.encode" />
         <item itemvalue="Python.decode" />
         <item itemvalue="Python.utils" />
-        <item itemvalue="Python.GA" />
       </list>
     </recent_temporary>
   </component>
@@ -523,6 +540,17 @@
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/GA.py</url>
+          <line>70</line>
+          <option name="timeStamp" value="119" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/test1.py">
@@ -615,38 +643,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/LICENSE">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/PSO.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="771">
-          <caret line="97" column="22" lean-forward="true" selection-start-line="97" selection-start-column="22" selection-end-line="97" selection-end-column="22" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/BA_class_version.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/BA.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-976">
-          <caret line="28" column="32" selection-start-line="28" selection-start-column="25" selection-end-line="28" selection-end-column="32" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Common/EnumSet.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="85">
@@ -654,13 +650,6 @@
           <folding>
             <marker date="1579425551559" expanded="true" signature="37:46" ph="..." />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/CASSA.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-502">
-          <caret line="3" selection-start-line="3" selection-end-line="3" selection-end-column="26" />
         </state>
       </provider>
     </entry>
@@ -680,82 +669,147 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/SSA.py">
+    <entry file="file://$PROJECT_DIR$/LICENSE">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/BA_class_version.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-24">
-          <caret line="14" column="30" lean-forward="true" selection-start-line="14" selection-start-column="30" selection-end-line="14" selection-end-column="30" />
+        <state relative-caret-position="-440">
           <folding>
             <element signature="e#0#18#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test.py">
+    <entry file="file://$PROJECT_DIR$/BA.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="19" column="10" lean-forward="true" selection-start-line="19" selection-start-column="10" selection-end-line="19" selection-end-column="10" />
+        <state relative-caret-position="-1046">
+          <caret line="19" column="23" selection-start-line="19" selection-start-column="23" selection-end-line="19" selection-end-column="23" />
           <folding>
-            <element signature="e#0#26#0" expanded="true" />
+            <element signature="e#0#18#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/GAutils/encode.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="20" lean-forward="true" selection-start-line="20" selection-end-line="20" />
+        <state relative-caret-position="323">
+          <caret line="19" column="65" selection-start-line="19" selection-start-column="65" selection-end-line="19" selection-end-column="65" />
           <folding>
-            <marker date="1579777971613" expanded="true" signature="356:357" ph="..." />
-            <marker date="1579777971613" expanded="true" signature="356:361" ph="..." />
+            <marker date="1579838779609" expanded="true" signature="356:357" ph="..." />
+            <marker date="1579838779609" expanded="true" signature="356:361" ph="..." />
+            <marker date="1579838779609" expanded="true" signature="555:829" ph="..." />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/GAutils/utils.py">
+    <entry file="file://$PROJECT_DIR$/test.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-10">
-          <caret line="35" lean-forward="true" selection-start-line="35" selection-end-line="35" />
+        <state relative-caret-position="289">
+          <caret line="17" column="13" selection-start-line="17" selection-start-column="13" selection-end-line="17" selection-end-column="13" />
           <folding>
-            <element signature="e#0#28#0" expanded="true" />
-            <marker date="1579746854875" expanded="true" signature="118:446" ph="..." />
-            <marker date="1579746854875" expanded="true" signature="447:448" ph="..." />
-            <marker date="1579746854875" expanded="true" signature="634:782" ph="..." />
-            <marker date="1579746854875" expanded="true" signature="1428:1449" ph="..." />
-            <marker date="1579746854875" expanded="true" signature="1527:1712" ph="..." />
-            <marker date="1579746854875" expanded="true" signature="1735:1740" ph="..." />
+            <element signature="e#0#26#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/GAutils/decode.py">
+    <entry file="file://$PROJECT_DIR$/CASSA.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="23" selection-start-line="23" selection-end-line="23" />
+        <state relative-caret-position="8">
+          <caret line="90" column="95" selection-start-line="90" selection-start-column="95" selection-end-line="90" selection-end-column="95" />
           <folding>
-            <element signature="e#0#28#0" expanded="true" />
-            <marker date="1579775877578" expanded="true" signature="136:137" ph="..." />
-            <marker date="1579775877578" expanded="true" signature="419:755" ph="..." />
+            <element signature="e#0#18#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PSO.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="66" column="68" selection-start-line="66" selection-start-column="68" selection-end-line="66" selection-end-column="68" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/FA.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2045">
+          <caret line="127" selection-start-line="127" selection-end-line="127" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/anaconda3/lib/python3.7/random.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="174">
+          <caret line="320" selection-start-line="320" selection-end-line="320" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Common/utils.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="257">
-          <caret line="46" lean-forward="true" selection-start-line="46" selection-end-line="46" />
+        <state relative-caret-position="388">
+          <caret line="26" column="33" selection-start-line="26" selection-start-column="33" selection-end-line="26" selection-end-column="33" />
           <folding>
             <element signature="e#0#30#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/SSA.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="294">
+          <caret line="73" column="17" lean-forward="true" selection-start-line="67" selection-start-column="11" selection-end-line="73" selection-end-column="17" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/GAutils/utils.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="818">
+          <caret line="62" column="39" lean-forward="true" selection-start-line="62" selection-start-column="39" selection-end-line="62" selection-end-column="39" />
+          <folding>
+            <element signature="e#0#28#0" expanded="true" />
+            <marker date="1579852702674" expanded="true" signature="118:446" ph="..." />
+            <marker date="1579852702674" expanded="true" signature="447:448" ph="..." />
+            <marker date="1579852702674" expanded="true" signature="634:782" ph="..." />
+            <marker date="1579852702674" expanded="true" signature="1439:1459" ph="..." />
+            <marker date="1579852702674" expanded="true" signature="1537:1751" ph="..." />
+            <marker date="1579852702674" expanded="true" signature="2170:2260" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/GAutils/decode.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="442">
+          <caret line="26" column="22" selection-start-line="26" selection-start-column="4" selection-end-line="26" selection-end-column="22" />
+          <folding>
+            <element signature="e#0#28#0" expanded="true" />
+            <marker date="1579840906823" expanded="true" signature="375:791" ph="..." />
+            <marker date="1579840906823" expanded="true" signature="954:959" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/GA.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="235">
-          <caret line="25" column="8" selection-start-line="25" selection-start-column="8" selection-end-line="25" selection-end-column="8" />
+        <state relative-caret-position="2346">
+          <caret line="138" column="23" selection-start-line="138" selection-start-column="23" selection-end-line="138" selection-end-column="23" />
           <folding>
             <element signature="e#0#11#0" expanded="true" />
-            <marker date="1579780790672" expanded="true" signature="862:981" ph="..." />
+            <marker date="1579870442076" expanded="true" signature="1151:1493" ph="..." />
+            <marker date="1579870442076" expanded="true" signature="1520:1525" ph="..." />
+            <marker date="1579870442076" expanded="true" signature="1989:2310" ph="..." />
+            <marker date="1579870442076" expanded="true" signature="2438:3283" ph="..." />
+            <marker date="1579870442076" expanded="true" signature="3600:4112" ph="..." />
+            <marker date="1579870442076" expanded="true" signature="4160:4226" ph="..." />
           </folding>
         </state>
       </provider>

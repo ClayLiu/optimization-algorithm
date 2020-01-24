@@ -54,7 +54,8 @@ def generate_population(populationQuantity, boundsList, constraintFunction):
         except MismatchError as e:
             print(e.info)
             sys.exit(1)
-    populationPositions = np.array(positions)
+    # populationPositions = np.array(positions)
+    populationPositions = positions
     return populationPositions
 
 

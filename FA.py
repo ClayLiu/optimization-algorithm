@@ -39,7 +39,6 @@ class FireflySwarm():
         self.relativeBrightnessFormula = lambda I, r : I * math.exp(- gamma * r)                # 相对亮度度量函数
         self.attractivenessFormula = lambda r : maximumAttractiveness * math.exp(- gamma * r)   # 吸引度计算函数
 
-
     def get_fireflyDistance(self):
         self.fireflyDistance -= self.fireflyDistance    # 全阵置零
         for i in range(0, self.fireflyQuantity - 1):
@@ -50,11 +49,9 @@ class FireflySwarm():
                 self.fireflyDistance[i][j] = __get_o_distance__(x_i, x_j)
         self.fireflyDistance += self.fireflyDistance.transpose()
 
-
     def get_brightness(self):
         for i, fireflyPosition in enumerate(self.fireflyPositions):
             self.fireflyBrightness[i] = self.objectiveFunction(*fireflyPosition)
-
 
     def get_relativeBrightness(self):
         """
@@ -74,7 +71,6 @@ class FireflySwarm():
                 else:
                     relativeBrightness = self.relativeBrightnessFormula(self.fireflyBrightness[j], firefly_i_j_distance)
                     self.fireflyRelativeBrightness[j][i] = relativeBrightness
-        
         
     def iteration(self, iter_num : int):
         best_brightness_value_history = []
@@ -115,6 +111,7 @@ class FireflySwarm():
         best_position = self.fireflyPositions[best_firefly_index]
         best_brightness = self.fireflyBrightness[best_firefly_index]
         return best_position, best_brightness, best_brightness_value_history
+
 
 if __name__ == '__main__':
     t2_f = lambda x, y : - (x**2 + y**2 + 25 * (math.sin(x) ** 2 + math.sin(y) ** 2))
