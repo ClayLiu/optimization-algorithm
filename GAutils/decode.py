@@ -1,10 +1,14 @@
 from Common.EnumSet import *
-from GAutils.utils import *
+
+
+def get_interval_length(bounds):
+    """获取区间长度"""
+    return bounds[Bounds.upper] - bounds[Bounds.lower]
 
 
 def binaryDecode(binary, bounds, decimalDigits = 6):
     """二进制编码的解码"""
-    intervalLength = interval_length(bounds)
+    intervalLength = get_interval_length(bounds)
     subintervalSum = intervalLength * 10 ** decimalDigits
     number = bounds[Bounds.lower] + binary*intervalLength/subintervalSum
     return number
@@ -25,7 +29,7 @@ def grayDecode(gray, bounds, decimalDigits = 6):
 
 
 def grayDecodeFromList(grayList,boundsList,decimalDigits = 6):
-    """grayList中的gray为二进制数但是在数组中以整数型显示->[6260971, 7476972]，可以直接进行二进制数的取反等操作"""
+    """grayList中的gray为二进制数但是在数组中以整数型显示->[6260971, 7476972]"""
     decodeList = []
     for i, gray in enumerate(grayList):
         decodeList.append(grayDecode(gray, boundsList[i], decimalDigits))

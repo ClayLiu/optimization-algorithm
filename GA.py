@@ -11,7 +11,7 @@ class GA:
     def __init__(self, populationSize, crossoverProbability, mutatioProbability, generationNum,
                  decimalDigits, objectiveFunction, boundsList, constraintFunction, crossoverOperator, extremum=False):
 
-        self.populationChromosome = []  # 种群的染色体
+        self.populationChromosome = []  # 种群的染色体,字符串形式存储
         self.populationNumber = []  # 种群染色体对应的数值
 
         self.fitness = []
@@ -35,7 +35,7 @@ class GA:
         for individual in self.populationNumber:
             self.populationChromosome.append(grayEncodeForList(individual, self.boundsList, decimalDigits=6))
         self.evaluate()
-        # print(self.populationChromosome)
+        print(self.populationChromosome)
 
     def get_fitness(self):
         return np.array([self.objectiveFunction(*position) for position in self.populationNumber])
@@ -64,50 +64,58 @@ class GA:
         """随机单、多点交叉"""
         chromosome1, chromosome2 = chrom1, chrom2
         if chrom1 != chrom2 and np.random.random() < self.crossoverProbability:
-            chromosome1, chromosome2 = 0, 0
-            chromLength = len(bin(chrom2).replace("0b", ""))
+            chromosome1, chromosome2 = "", ""
+            chromLength = len(chrom1)
 
             # 生成随机不重复升序排列切点列表，首端为0
             pointsList = random.sample(range(1, chromLength + 1), points)
             pointsList.append(0)
+            pointsList.append(chromLength + 1)
             pointsList.sort()
 
             for i, point in enumerate(pointsList):
                 if i != 0:
                     if i % 2 == 0:
-                        chromosome1 = chromosome1 + shear(chrom2, i-1, i)
-                        chromosome2 = chromosome2 + shear(chrom1, i-1, i)
+                        chromosome1 = chromosome1 + shear(chrom2, pointsList[i-1], point)
+                        chromosome2 = chromosome2 + shear(chrom1, pointsList[i-1], point)
                     else:
-                        chromosome1 = chromosome1 + shear(chrom1, i - 1, i)
-                        chromosome2 = chromosome2 + shear(chrom2, i - 1, i)
+                        chromosome1 = chromosome1 + shear(chrom1, pointsList[i-1], point)
+                        chromosome2 = chromosome2 + shear(chrom2, pointsList[i-1], point)
 
         return chromosome1, chromosome2
 
     def and_or_crossover(self, chrom1, chrom2):
+        chromosome1, chromosome2 = chrom1, chrom2
         if chrom1 != chrom2 and np.random.random() < self.crossoverProbability:
+            chrom1, chrom2 = binarystring_to_number(chrom1), binarystring_to_number(chrom2)
             chromosome1, chromosome2 = chrom1 & chrom2, chrom1 | chrom2
-            return chromosome1, chromosome2
+        return chromosome1, chromosome2
 
     # 单，多点变异
     def mutate(self, chrom, points):
-        chromosome = chrom
         if np.random.random() < self.mutationProbability:
-            chromosome = 0
-            chromLength = len(bin(chrom).replace("0b", ""))
+            chromosome = ""
+            chromLength = len(chrom)
             pointsList = random.sample(range(1, chromLength + 1), points)
 
             for point in pointsList:
-                mask = shear(chrom, point, point + 1)
-                if mask == 0:
-                    chromosome = chrom + 2 ** (point - 1)
+                if chrom[point-1] == "1":
+                    chrom = chrom[0:point - 1] + "0" + chrom[point:]
                 else:
-                    chromosome = chrom - 2 ** (point - 1)
-
-        return chromosome
+                    chrom = chrom[0:point - 1] + "1" + chrom[point:]
+        return chrom
 
     # 保留最佳个体
     def retained_best_individual(self):
         self.bestIndividual.append(np.argmax(self.fitness))
+
+    def correct_individual(self, individual):
+        individualNumber = []
+        for chrom in individual:
+            individualNumber.append(binarystring_to_number(chrom))
+
+        individualNumber = grayDecodeFromList(individualNumber, self.boundsList, self.decimalDigits)
+        inspectors(individualNumber, self.boundsList, self.constraintFunction)
 
     # 进化过程
     def evolve(self):
@@ -115,8 +123,8 @@ class GA:
         self.evaluate()
         individualNumber = 0
         while True:
-            newIndividual1 = []
-            newIndividual2 = []
+            newIndividuals = [[], []]
+            legalIndividuals = []
             # 选择两个个体，进行交叉与变异，产生新的种群
             idv1 = self.roulette_wheel_selection()
             idv2 = self.roulette_wheel_selection()
@@ -125,7 +133,7 @@ class GA:
 
                 if not isinstance(bounds, int):
                     # 交叉
-                    chrom1, chrom2 = self.point_crossover(self.populationChromosome[idv1][i], self.populationChromosome[idv2][i], 1)
+                    chrom1, chrom2 = self.point_crossover(self.populationChromosome[idv1][i], self.populationChromosome[idv2][i], 2)
                     # 变异
                     chrom1, chrom2 = self.mutate(chrom1, 1), self.mutate(chrom2, 1)
 
@@ -133,15 +141,25 @@ class GA:
                     # 区间为一个整数，则不作处理
                     chrom1, chrom2 = self.populationChromosome[idv1][i], self.populationChromosome[idv2][i]
 
-                newIndividual1.append(chrom1)
-                newIndividual2.append(chrom2)
+                newIndividuals[0].append(chrom1)
+                newIndividuals[1].append(chrom2)
 
-                # TO-DO 上下限控制
+            # TO-DO 上下限控制
+            for newIndividual in newIndividuals:
+                numberList = chromList_to_numberList(newIndividual, self.boundsList, self.decimalDigits)
+                try:
+                    inspectors(numberList, self.boundsList, self.constraintFunction)
+                except ViolatedConstraintError:
+                    continue
+                except IllegalVariableError:
+                    numberList = convert_position_to_legal(numberList, self.boundsList)
+                chromList = numberList_to_chromList(numberList, self.boundsList, self.decimalDigits)
+                legalIndividuals.append(chromList)
 
-            newPopulation.append(newIndividual1)
-            newPopulation.append(newIndividual2)
+            for legalIndividual in legalIndividuals:
+                newPopulation.append(legalIndividual)
 
-            individualNumber = individualNumber + 2
+            individualNumber = individualNumber + len(legalIndividuals)
             if individualNumber >= self.populationSize:
                 break
 
@@ -150,10 +168,10 @@ class GA:
 
         # 更新换代：用种群进化生成的新个体集合 self.new_individuals 替换当前个体集合
 
-        self.populationChromosome = newPopulation[0:self.populationSize]
+        self.populationChromosome = newPopulation
         self.populationNumber = []
         for chromosome in self.populationChromosome:
-            self.populationNumber.append(grayDecodeFromList(chromosome, self.boundsList))
+            self.populationNumber.append(grayDecodeFromList(chromList_to_numberList(chromosome), self.boundsList, self.decimalDigits))
 
     def run(self):
         for i in range(self.generationNum):
