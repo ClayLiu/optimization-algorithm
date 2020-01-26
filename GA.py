@@ -1,15 +1,15 @@
 import math
-import numpy as np
 from Common.utils import *
-from GAutils.encode import *
-from GAutils.decode import *
+from GAutils.decode import Decode
+from GAutils.encode import Encode
+from GAutils.utils import *
 import random
 
 
 class GA:
     # 种群的设计
     def __init__(self, populationSize, crossoverProbability, mutatioProbability, generationNum,
-                 decimalDigits, objectiveFunction, boundsList, constraintFunction, crossoverOperator, extremum=False):
+                 decimalDigits, objectiveFunction, boundsList, constraintFunction, decode, encode, extremum=False):
 
         self.populationChromosome = []  # 种群的染色体,字符串形式存储
         self.populationNumber = []  # 种群染色体对应的数值
@@ -27,15 +27,17 @@ class GA:
         self.fitness = np.array([])
         self.populationSurvivalProbability = np.array([])
         self.bestIndividual = []
-        self.crossoverOperator = crossoverOperator
+        self.decode = decode
+        self.encode = encode
         self.init_population()
 
     def init_population(self):
+
         self.populationNumber = generate_population(self.populationSize, self.boundsList, self.constraintFunction)
         for individual in self.populationNumber:
-            self.populationChromosome.append(grayEncodeForList(individual, self.boundsList, decimalDigits=6))
+            self.populationChromosome.append(self.encode.grayListEncode(individual))
         self.evaluate()
-        print(self.populationChromosome)
+        # print(self.populationChromosome)
 
     def get_fitness(self):
         return np.array([self.objectiveFunction(*position) for position in self.populationNumber])
@@ -87,14 +89,15 @@ class GA:
     def and_or_crossover(self, chrom1, chrom2):
         chromosome1, chromosome2 = chrom1, chrom2
         if chrom1 != chrom2 and np.random.random() < self.crossoverProbability:
-            chrom1, chrom2 = binarystring_to_number(chrom1), binarystring_to_number(chrom2)
+            chrom1, chrom2 = self.encode.binstr_to_num(chrom1), self.encode.binstr_to_num(chrom2)
             chromosome1, chromosome2 = chrom1 & chrom2, chrom1 | chrom2
+            chromosome1, chromosome2 = self.encode.num_to_binstr(chromosome1), self.encode.num_to_binstr(chromosome2)
+            # TO-DO 修正
         return chromosome1, chromosome2
 
     # 单，多点变异
     def mutate(self, chrom, points):
         if np.random.random() < self.mutationProbability:
-            chromosome = ""
             chromLength = len(chrom)
             pointsList = random.sample(range(1, chromLength + 1), points)
 
@@ -107,15 +110,7 @@ class GA:
 
     # 保留最佳个体
     def retained_best_individual(self):
-        self.bestIndividual.append(np.argmax(self.fitness))
-
-    def correct_individual(self, individual):
-        individualNumber = []
-        for chrom in individual:
-            individualNumber.append(binarystring_to_number(chrom))
-
-        individualNumber = grayDecodeFromList(individualNumber, self.boundsList, self.decimalDigits)
-        inspectors(individualNumber, self.boundsList, self.constraintFunction)
+        self.bestIndividual.append(self.fitness[np.argmin(self.fitness)])
 
     # 进化过程
     def evolve(self):
@@ -144,16 +139,18 @@ class GA:
                 newIndividuals[0].append(chrom1)
                 newIndividuals[1].append(chrom2)
 
-            # TO-DO 上下限控制
+            # 上下限控制
             for newIndividual in newIndividuals:
-                numberList = chromList_to_numberList(newIndividual, self.boundsList, self.decimalDigits)
+                numberList = self.decode.grayListDecode(newIndividual)
                 try:
                     inspectors(numberList, self.boundsList, self.constraintFunction)
                 except ViolatedConstraintError:
                     continue
                 except IllegalVariableError:
                     numberList = convert_position_to_legal(numberList, self.boundsList)
-                chromList = numberList_to_chromList(numberList, self.boundsList, self.decimalDigits)
+                # print(numberList)
+                # print(self.boundsList)
+                chromList = self.encode.grayListEncode(numberList)
                 legalIndividuals.append(chromList)
 
             for legalIndividual in legalIndividuals:
@@ -171,12 +168,12 @@ class GA:
         self.populationChromosome = newPopulation
         self.populationNumber = []
         for chromosome in self.populationChromosome:
-            self.populationNumber.append(grayDecodeFromList(chromList_to_numberList(chromosome), self.boundsList, self.decimalDigits))
+            self.populationNumber.append(self.decode.grayListDecode(chromosome))
 
     def run(self):
         for i in range(self.generationNum):
             self.evolve()
-            print(i, max(self.fitness))
+            print(i, min(self.fitness))
 
 
 boundsList = ((-2*math.pi, 2*math.pi), (-2*math.pi, 2*math.pi))
@@ -185,7 +182,9 @@ objectiveFunction = lambda x, y: x**2 + y**2 + 25 * (math.sin(x) ** 2 + math.sin
 
 constraintFunction = lambda x, y: True
 
+decode = Decode(boundsList, decimalDigits=6)
+encode = Encode(boundsList, decimalDigits=6)
 
 # 种群的个体数量为 50，染色体长度为 25，交叉概率为 0.8，变异概率为 0.1,进化最大世代数为 150
-pop = GA(30, 0.8, 0.1, 150, 6, objectiveFunction, boundsList, constraintFunction, "point_crossover", extremum=False)
+pop = GA(30, 0.8, 0.1, 150, 6, objectiveFunction, boundsList, constraintFunction, decode, encode, extremum=False)
 pop.run()

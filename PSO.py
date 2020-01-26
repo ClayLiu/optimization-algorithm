@@ -66,7 +66,6 @@ class PSO:
         for index, singlePosition in enumerate(self.particleSwarmPosition):
             self.particleSwarmPosition[index], self.velocity[index] = self.calculate_position_and_velocity(self.velocity[index], singlePosition, self.particleBestPosition[index])
 
-
     def update_best(self):
         globalBestFitness = self.func(*self.globalBestPosition)
         personBestFitness = np.array([self.func(*particle) for particle in self.particleBestPosition])

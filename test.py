@@ -1,13 +1,3 @@
-from Common.utils import *
-import random
-import Common.EnumSet
-
-import math
-from bitarray import *
-from GAutils.utils import *
-from GAutils.encode import *
-
-
 # print(bin(7))
 # print(bin(int("0b111",2)+int("0b111", 2)))
 
@@ -18,4 +8,4 @@ from GAutils.encode import *
 a = [[1, 2], [2, 3]]
 b = []
 
-print(len(a))
+print(-1 * "0")

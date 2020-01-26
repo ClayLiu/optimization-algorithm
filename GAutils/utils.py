@@ -1,28 +1,29 @@
 from Common.EnumSet import *
 from Exceptions.Errors import *
-from GAutils.decode import *
-from GAutils.encode import *
 
 
-def check_parameters(number, bounds):
-    """检查参数是否合法"""
-    if not (isinstance(number, int) or isinstance(number, float)):
-        raise TypeError("输入参数类型错误")
-    if isinstance(bounds, int):
-        if number != bounds:
-            raise IllegalVariableError
-    else:
-        if number < bounds[Bounds.lower] or number > bounds[Bounds.upper]:
-            raise IllegalVariableError
+# from GAutils.encode import grayEncodeForList
 
 
-def get_interval_length(bounds):
-    """获取区间长度"""
-    return bounds[Bounds.upper] - bounds[Bounds.lower]
-
-
-def fill_zeros(binaryString, intervalLength, decimalDigits):
-    return "0" * (binary_length(intervalLength, decimalDigits) - len(binaryString)) + binaryString
+# def check_parameters(number, bounds):
+#     """检查参数是否合法"""
+#     if not (isinstance(number, int) or isinstance(number, float)):
+#         raise TypeError("输入参数类型错误")
+#     if isinstance(bounds, int):
+#         if number != bounds:
+#             raise IllegalVariableError
+#     else:
+#         if number < bounds[Bounds.lower] or number > bounds[Bounds.upper]:
+#             raise IllegalVariableError
+#
+#
+# def get_interval_length(bounds):
+#     """获取区间长度"""
+#     return bounds[Bounds.upper] - bounds[Bounds.lower]
+#
+#
+# def fill_zeros(binaryString, intervalLength, decimalDigits):
+#     return "0" * (binary_length(intervalLength, decimalDigits) - len(binaryString)) + binaryString
 
 
 # def decimal_to_binary(number, bounds, decimalDigits = 6):
@@ -40,47 +41,31 @@ def fill_zeros(binaryString, intervalLength, decimalDigits):
 #     return pureBinary
 
 
-def number_to_digit(number, bounds, decimalDigits):
-    """将区间分成n份，获取该数字是其中的第几份"""
-    intervalLength = get_interval_length(bounds)
-    subintervalSum = intervalLength * 10 ** decimalDigits
-    precision = intervalLength / subintervalSum
-    digit = int((number - bounds[Bounds.lower]) / precision)
-
-    return digit
-
-
-def chromList_to_numberList(chromList, boundLists, decimalDigits):
-    numberList = []
-    for chrom in chromList:
-        numberList.append(binarystring_to_number(chrom))
-    numberList = grayDecodeFromList(numberList, boundLists, decimalDigits)
-    return numberList
-
-
-def numberList_to_chromList(numnberList, boundLists, decimalDigits):
-    chromList = []
-    for number in numnberList:
-        chromList.append(number_to_binarystring(number))
-    chromList = grayEncodeForList(chromList, boundLists, decimalDigits)
-    return chromList
-
-
-def binary_length(intervalLength, decimalDigits):
-    """获取能表示该最大份数的二进制数的位数"""
-    digitSum = int(intervalLength*10**decimalDigits + 1)
-    binaryLength = len(number_to_binarystring(digitSum))
-    return binaryLength
-
-
-def number_to_binarystring(binary):
-    """数字型转换为二进制字符串"""
-    return bin(binary).replace("0b", "")
-
-
-def binarystring_to_number(binaryString):
-    """二进制字符串转换为二进制"""
-    return int(binaryString, 2)
+# def number_to_digit(number, bounds, decimalDigits):
+#     """将区间分成n份，获取该数字是其中的第几份"""
+#     intervalLength = get_interval_length(bounds)
+#     subintervalSum = intervalLength * 10 ** decimalDigits
+#     precision = intervalLength / subintervalSum
+#     digit = int((number - bounds[Bounds.lower]) / precision)
+#
+#     return digit
+#
+#
+# def binary_length(intervalLength, decimalDigits):
+#     """获取能表示该最大份数的二进制数的位数"""
+#     digitSum = int(intervalLength*10**decimalDigits + 1)
+#     binaryLength = len(number_to_binarystring(digitSum))
+#     return binaryLength
+#
+#
+# def number_to_binarystring(binary):
+#     """数字型转换为二进制字符串"""
+#     return bin(binary).replace("0b", "")
+#
+#
+# def binarystring_to_number(binaryString):
+#     """二进制字符串转换为二进制"""
+#     return int(binaryString, 2)
 
 
 # def shear(chromosome, start, end):

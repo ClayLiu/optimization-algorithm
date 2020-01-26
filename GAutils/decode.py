@@ -1,38 +1,54 @@
-from Common.EnumSet import *
 
+class Decode:
+    def __init__(self, boundsLists, decimalDigits):
+        self.boundsLists = boundsLists
+        self.decimalDigits = decimalDigits
 
-def get_interval_length(bounds):
-    """获取区间长度"""
-    return bounds[Bounds.upper] - bounds[Bounds.lower]
+    def get_interval_length(self, bounds):
+        """获取区间长度"""
+        return bounds[0] - bounds[1]
 
+    def binaryDecode(self, binary, bounds):
+        """
+        :param binary: 二进制字符串形式
+        :param bounds: 该二进制字符串的区间
+        :return: 解码完成的浮点型数字
+        """
+        binary = int(binary, 2)
+        intervalLength = self.get_interval_length(bounds)
+        subintervalSum = intervalLength * 10 ** self.decimalDigits
+        number = bounds[0] + binary * intervalLength / subintervalSum
+        return number
 
-def binaryDecode(binary, bounds, decimalDigits = 6):
-    """二进制编码的解码"""
-    intervalLength = get_interval_length(bounds)
-    subintervalSum = intervalLength * 10 ** decimalDigits
-    number = bounds[Bounds.lower] + binary*intervalLength/subintervalSum
-    return number
+    def grayDecode(self, grayString, bounds):
+        """
+        :param gray: 格雷码字符串形式
+        :param bounds: 该格雷码的区间
+        :return:
+        """
+        binaryString = grayString[0]
+        for i, number in enumerate(grayString):
+            if i != 0:
+                if number == binaryString[i - 1]:
+                    binaryString = binaryString + "0"
+                else:
+                    binaryString = binaryString + "1"
+        return self.binaryDecode(binaryString, bounds)
 
+    def binaryListDecode(self, binaryList):
+        decodeList = []
+        for i, binary in enumerate(binaryList):
+            decodeList.append(self.binaryDecode(binary,self.boundsLists[i]))
+        return decodeList
 
-def grayDecode(gray, bounds, decimalDigits = 6):
-    """格雷码解码"""
-    grayString = bin(gray).replace("0b", "")
-    binaryString = grayString[0]
-    for i, number in enumerate(grayString):
-        if i != 0:
-            if number == binaryString[i-1]:
-                binaryString = binaryString + "0"
-            else:
-                binaryString = binaryString + "1"
-    binary = int("0b" + binaryString, 2)
-    return binaryDecode(binary, bounds, decimalDigits)
+    def grayListDecode(self, grayList):
+        """
+        :param grayList: 格雷码二进制字符串列表 -> ["101010101","1010101"]
+        :return: 浮点型解码列表
+        """
+        decodeList = []
+        for i, gray in enumerate(grayList):
+            decodeList.append(self.grayDecode(gray, self.boundsLists[i]))
+        return decodeList
 
-
-def grayDecodeFromList(grayList,boundsList,decimalDigits = 6):
-    """grayList中的gray为二进制数但是在数组中以整数型显示->[6260971, 7476972]"""
-    decodeList = []
-    for i, gray in enumerate(grayList):
-        decodeList.append(grayDecode(gray, boundsList[i], decimalDigits))
-
-    return decodeList
 
