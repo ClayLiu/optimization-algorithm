@@ -8,8 +8,9 @@ import random
 
 class GA:
     # 种群的设计
-    def __init__(self, populationSize, crossoverProbability, mutatioProbability, generationNum,
-                 decimalDigits, objectiveFunction, boundsList, constraintFunction, decode, encode, extremum=False):
+    def __init__(self, populationSize, generationNum, crossoverProbability,
+                 mutatioProbability, boundsList, objectiveFunction,
+                 constraintFunction, operator, decimalDigits=6, extremum=False):
 
         self.populationChromosome = []  # 种群的染色体,字符串形式存储
         self.populationNumber = []  # 种群染色体对应的数值
@@ -27,8 +28,9 @@ class GA:
         self.fitness = np.array([])
         self.populationSurvivalProbability = np.array([])
         self.bestIndividual = []
-        self.decode = decode
-        self.encode = encode
+        self.decode = Decode(self.boundsList, self.decimalDigits)
+        self.encode = Encode(self.boundsList, self.decimalDigits)
+        self.operator = operator
         self.init_population()
 
     def init_population(self):
@@ -45,11 +47,15 @@ class GA:
     def evaluate(self):
         """用于评估种群中每个个体的适应度并计算出生存概率"""
         self.fitness = self.get_fitness()
-        fitnessTotal = np.sum(self.fitness)
-
         self.populationSurvivalProbability = []
-        for fitness in self.fitness:
-            self.populationSurvivalProbability.append(fitness / fitnessTotal)
+        if self.extremum:
+            fitnessTotal = np.sum(self.fitness)
+            for fitness in self.fitness:
+                self.populationSurvivalProbability.append(fitness / fitnessTotal)
+        else:
+            fitnessTotal = np.sum(1 / self.fitness)
+            for fitness in self.fitness:
+                self.populationSurvivalProbability.append((1 / fitness) / fitnessTotal)
 
     # 轮盘赌博机（选择）
     def roulette_wheel_selection(self):
@@ -86,13 +92,13 @@ class GA:
 
         return chromosome1, chromosome2
 
-    def and_or_crossover(self, chrom1, chrom2):
+    def and_or_crossover(self, chrom1, chrom2, intervalLength):
         chromosome1, chromosome2 = chrom1, chrom2
         if chrom1 != chrom2 and np.random.random() < self.crossoverProbability:
             chrom1, chrom2 = self.encode.binstr_to_num(chrom1), self.encode.binstr_to_num(chrom2)
             chromosome1, chromosome2 = chrom1 & chrom2, chrom1 | chrom2
             chromosome1, chromosome2 = self.encode.num_to_binstr(chromosome1), self.encode.num_to_binstr(chromosome2)
-            # TO-DO 修正
+            chromosome1, chromosome2 = self.encode.fill_zeros(chromosome1, intervalLength), self.encode.fill_zeros(chromosome2, intervalLength)
         return chromosome1, chromosome2
 
     # 单，多点变异
@@ -110,7 +116,10 @@ class GA:
 
     # 保留最佳个体
     def retained_best_individual(self):
-        self.bestIndividual.append(self.fitness[np.argmin(self.fitness)])
+        if self.extremum:
+            self.bestIndividual.append(self.fitness[np.argmax(self.fitness)])
+        else:
+            self.bestIndividual.append(self.fitness[np.argmin(self.fitness)])
 
     # 进化过程
     def evolve(self):
@@ -128,9 +137,12 @@ class GA:
 
                 if not isinstance(bounds, int):
                     # 交叉
-                    chrom1, chrom2 = self.point_crossover(self.populationChromosome[idv1][i], self.populationChromosome[idv2][i], 2)
+                    if self.operator[0] == 0:
+                        chrom1, chrom2 = self.point_crossover(self.populationChromosome[idv1][i], self.populationChromosome[idv2][i], self.operator[1])
+                    elif self.operator[0] == 1:
+                        chrom1, chrom2 = self.and_or_crossover(self.populationChromosome[idv1][i], self.populationChromosome[idv2][i], self.operator[1])
                     # 变异
-                    chrom1, chrom2 = self.mutate(chrom1, 1), self.mutate(chrom2, 1)
+                    chrom1, chrom2 = self.mutate(chrom1, 1), self.mutate(chrom2, self.operator[2])
 
                 else:
                     # 区间为一个整数，则不作处理
@@ -164,8 +176,7 @@ class GA:
         self.retained_best_individual()
 
         # 更新换代：用种群进化生成的新个体集合 self.new_individuals 替换当前个体集合
-
-        self.populationChromosome = newPopulation
+        self.populationChromosome = newPopulation.copy()
         self.populationNumber = []
         for chromosome in self.populationChromosome:
             self.populationNumber.append(self.decode.grayListDecode(chromosome))
@@ -173,18 +184,22 @@ class GA:
     def run(self):
         for i in range(self.generationNum):
             self.evolve()
-            print(i, min(self.fitness))
+            print(np.min(self.fitness))
+
+        print()
+        print(np.min(self.bestIndividual))
 
 
-boundsList = ((-2*math.pi, 2*math.pi), (-2*math.pi, 2*math.pi))
+boundsList = ((-2, 2), (-2, 2))
 
-objectiveFunction = lambda x, y: x**2 + y**2 + 25 * (math.sin(x) ** 2 + math.sin(y) ** 2)
+# objectiveFunction = lambda x, y: 20 + x**2 + y**2 - 10*(math.cos(2*math.pi*x) + math.cos(2*math.pi*y))
+
+objectiveFunction = lambda x, y: x**2 + y**2
 
 constraintFunction = lambda x, y: True
 
-decode = Decode(boundsList, decimalDigits=6)
-encode = Encode(boundsList, decimalDigits=6)
+operator = [1, 10, 15]
+# 交叉方式 0/1 -> point_crossover/and_or_crossover，交叉基因点位数量，变异基因点位数量
 
-# 种群的个体数量为 50，染色体长度为 25，交叉概率为 0.8，变异概率为 0.1,进化最大世代数为 150
-pop = GA(30, 0.8, 0.1, 150, 6, objectiveFunction, boundsList, constraintFunction, decode, encode, extremum=False)
+pop = GA(100, 100, 0.9, 0.1, boundsList, objectiveFunction, constraintFunction, operator, decimalDigits=6, extremum=False)
 pop.run()
