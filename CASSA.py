@@ -135,8 +135,9 @@ class CASSA:
 
 boundsList = ((-2*math.pi, 2*math.pi), (-2*math.pi, 2*math.pi))
 
-objectiveFunction = lambda x, y: x**2 + y**2 + 25 * (math.sin(x) ** 2 + math.sin(y) ** 2)
-
+# objectiveFunction = lambda x, y: x**2 + y**2 + 25 * (math.sin(x) ** 2 + math.sin(y) ** 2)
+# objectiveFunction = lambda x, y: 20 + x**2 + y**2 - 10*(math.cos(2*math.pi*x) + math.cos(2*math.pi*y))
+objectiveFunction = lambda x, y: -abs(math.sin(x)*math.cos(y)*math.exp(abs(1 - ((x**2+y**2)**0.5))/math.pi))
 constraintFunction = lambda x, y: True
 
 salp_num = 30

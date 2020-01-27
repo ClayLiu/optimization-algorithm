@@ -1,8 +1,6 @@
 # encoding: utf-8
 import numpy as np
-import mssa
-import visdom
-
+from MSSA import mssa
 
 fit_1 = lambda x, y: 1-np.exp(-(((x-y)**2/2)**0.5)**2/0.5)*np.exp(-((((x+y)**2/2)**0.5)-np.sqrt(200))**2/250)
 fit_2 = lambda x, y: 1-np.exp(-(((x-y)**2/2)**0.5)**2/5)*np.exp(-(((x+y)**2/2)**0.5)**2/350)
