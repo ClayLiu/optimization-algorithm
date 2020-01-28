@@ -1,17 +1,13 @@
-import numpy as np
 import math
 from Common.utils import *
+import numpy as np
 
 
 class PSO:
-    def __init__(self, func, boundsLists, constraintFunction, velocityMax,  particleSum, iterNum, w=1, c1=0.2, c2=0.2, extremum=False):
-        self.velocityMax = velocityMax
+    def __init__(self, objectiveFunction, boundsLists, constraintFunction, particleSum, iterNum, extremum=False):
         self.dimension = len(boundsList)
         self.constraintFunction = constraintFunction
-        self.func = func
-        self.c1 = c1
-        self.c2 = c2
-        self.w = w
+        self.objectiveFunction = objectiveFunction
         self.particleSum = particleSum
         self.iterNum = iterNum
         self.boundsLists = boundsLists
@@ -20,23 +16,27 @@ class PSO:
         self.particleBestPosition = np.zeros([self.particleSum, self.dimension])
         self.globalBestPosition = np.zeros([self.dimension])
         self.extremum = extremum
+        self.c1 = float(read_config("PSO", "c1"))
+        self.c2 = float(read_config("PSO", "c2"))
+        self.w = float(read_config("PSO", "w"))
+        self.velocityMax = float(read_config("PSO", "velocityMax"))
         self.init_population()
 
     def init_population(self):
         self.particleSwarmPosition = generate_population(self.particleSum, self.boundsLists, self.constraintFunction)
-        self.velocity = np.random.rand(*self.particleSwarmPosition.shape) * self.velocityMax
+        self.velocity = np.random.rand(self.particleSum, self.dimension) * self.velocityMax
         self.particleBestPosition = self.particleSwarmPosition.copy()
         self.globalBestPosition = self.get_global_best_position()
 
     def get_global_best_position(self):
         if self.extremum:
-            globalBestPosition = max(self.particleBestPosition, key=lambda particle: self.func(*particle)).copy()
+            globalBestPosition = max(self.particleBestPosition, key=lambda particle: self.objectiveFunction(*particle)).copy()
         else:
-            globalBestPosition = min(self.particleBestPosition, key=lambda particle: self.func(*particle)).copy()
+            globalBestPosition = min(self.particleBestPosition, key=lambda particle: self.objectiveFunction(*particle)).copy()
         return globalBestPosition
 
     def get_all_particles_fitness(self):
-        return np.array([self.func(*position) for position in self.particleSwarmPosition])
+        return np.array([self.objectiveFunction(*position) for position in self.particleSwarmPosition])
 
     def calculate_position_and_velocity(self, velocity, singlePosition, particleBestPosition):
 
@@ -67,11 +67,11 @@ class PSO:
             self.particleSwarmPosition[index], self.velocity[index] = self.calculate_position_and_velocity(self.velocity[index], singlePosition, self.particleBestPosition[index])
 
     def update_best(self):
-        globalBestFitness = self.func(*self.globalBestPosition)
-        personBestFitness = np.array([self.func(*particle) for particle in self.particleBestPosition])
+        globalBestFitness = self.objectiveFunction(*self.globalBestPosition)
+        personBestFitness = np.array([self.objectiveFunction(*particle) for particle in self.particleBestPosition])
 
         for index, singleParticle in enumerate(self.particleSwarmPosition):
-            current_particle_fitness = self.func(*singleParticle)
+            current_particle_fitness = self.objectiveFunction(*singleParticle)
 
             if self.extremum:
                 if current_particle_fitness > personBestFitness[index]:
@@ -97,8 +97,7 @@ class PSO:
             self.pso()
 
             print("正在进行第", i, "次迭代")
-        print(self.globalBestPosition, self.func(*self.globalBestPosition))
-
+        print(self.globalBestPosition, self.objectiveFunction(*self.globalBestPosition))
 
 boundsList = ((-2*math.pi, 2*math.pi), (-2*math.pi, 2*math.pi))
 
@@ -109,7 +108,6 @@ constraintFunction = lambda x, y: True
 particleSum = 1000
 iterNum = 1000
 
-
-pso = PSO(objectiveFunction, boundsList, constraintFunction, 0.5,  particleSum, iterNum, w=1, c1=0.2, c2=0.2)
+pso = PSO(objectiveFunction, boundsList, constraintFunction,  particleSum, iterNum, extremum=False)
 
 pso.iterator()

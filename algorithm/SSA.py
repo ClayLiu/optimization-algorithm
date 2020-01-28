@@ -1,10 +1,8 @@
-import numpy as np
 import math
-import sys
 from Common.utils import *
 
 
-class SSA:
+class SSA():
     def __init__(self, objectiveFunction, boundsList, constraintFunction, salpSum, iterNum, extremum=False):
         """
         :param extremum: false -> min  true -> max

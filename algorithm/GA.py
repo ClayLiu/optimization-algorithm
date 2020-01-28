@@ -1,36 +1,36 @@
-import math
 from Common.utils import *
-from GAutils.decode import Decode
-from GAutils.encode import Encode
-from GAutils.utils import *
+from algorithm.GAutils.decode import Decode
+from algorithm.GAutils.encode import Encode
+from algorithm.GAutils.utils import *
 import random
+from algorithm.A import A
 
 
-class GA:
+class GA(A):
     # 种群的设计
-    def __init__(self, populationSize, generationNum, crossoverProbability,
-                 mutatioProbability, boundsList, objectiveFunction,
-                 constraintFunction, operator, decimalDigits=6, extremum=False):
+    def __init__(self, objectiveFunction, boundsList, constraintFunction, populationSize, generationNum, extremum=False):
 
         self.populationChromosome = []  # 种群的染色体,字符串形式存储
         self.populationNumber = []  # 种群染色体对应的数值
 
         self.fitness = []
-        self.decimalDigits = decimalDigits
+        self.decimalDigits = float(read_config("GA", "decimalDigits"))
         self.objectiveFunction = objectiveFunction
         self.boundsList = boundsList
         self.constraintFunction = constraintFunction
         self.extremum = extremum
         self.populationSize = populationSize
-        self.crossoverProbability = crossoverProbability
-        self.mutationProbability = mutatioProbability
+        self.crossoverProbability = float(read_config("GA", "crossoverProbability"))
+        self.mutationProbability = float(read_config("GA", "mutationProbability"))
         self.generationNum = generationNum
         self.fitness = np.array([])
         self.populationSurvivalProbability = np.array([])
         self.bestIndividual = []
         self.decode = Decode(self.boundsList, self.decimalDigits)
         self.encode = Encode(self.boundsList, self.decimalDigits)
-        self.operator = operator
+        self.crossoverPointsNumber = int(read_config("GA", "crossoverPointsNumber"))
+        self.mutatePointsNumber = int(read_config("GA", "mutatePointsNumber"))
+        self.crossoverOperator = int(read_config("GA", "crossoverOperator"))
         self.init_population()
 
     def init_population(self):
@@ -137,12 +137,12 @@ class GA:
 
                 if not isinstance(bounds, int):
                     # 交叉
-                    if self.operator[0] == 0:
-                        chrom1, chrom2 = self.point_crossover(self.populationChromosome[idv1][i], self.populationChromosome[idv2][i], self.operator[1])
-                    elif self.operator[0] == 1:
-                        chrom1, chrom2 = self.and_or_crossover(self.populationChromosome[idv1][i], self.populationChromosome[idv2][i], self.operator[1])
+                    if self.crossoverOperator == 0:
+                        chrom1, chrom2 = self.point_crossover(self.populationChromosome[idv1][i], self.populationChromosome[idv2][i], self.crossoverPointsNumber)
+                    elif self.crossoverOperator == 1:
+                        chrom1, chrom2 = self.and_or_crossover(self.populationChromosome[idv1][i], self.populationChromosome[idv2][i], self.crossoverPointsNumber)
                     # 变异
-                    chrom1, chrom2 = self.mutate(chrom1, 1), self.mutate(chrom2, self.operator[2])
+                    chrom1, chrom2 = self.mutate(chrom1, 1), self.mutate(chrom2, self.mutatePointsNumber)
 
                 else:
                     # 区间为一个整数，则不作处理
@@ -198,8 +198,9 @@ objectiveFunction = lambda x, y: x**2 + y**2
 
 constraintFunction = lambda x, y: True
 
-operator = [1, 10, 15]
-# 交叉方式 0/1 -> point_crossover/and_or_crossover，交叉基因点位数量，变异基因点位数量
+populationSize = 100
+generationNum = 100
 
-pop = GA(100, 100, 0.9, 0.1, boundsList, objectiveFunction, constraintFunction, operator, decimalDigits=6, extremum=False)
+# 交叉方式 0/1 -> point_crossover/and_or_crossover，交叉基因点位数量，变异基因点位数量
+pop = GA(objectiveFunction, boundsList, constraintFunction, populationSize, generationNum, extremum=False)
 pop.run()

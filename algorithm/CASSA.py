@@ -2,9 +2,10 @@ import numpy as np
 import math
 from collections.abc import Iterable
 from Common.utils import *
+from algorithm.A import A
 
 
-class CASSA:
+class CASSA(A):
     def __init__(self, objectiveFunction, boundsLists, constraintFunction, salp_num, iter_num, extremum=False):
 
         self.objectiveFunction = objectiveFunction
@@ -19,11 +20,11 @@ class CASSA:
         self.constraintFunction = constraintFunction
         self.extremum = extremum
         self.c1 = 0.0
-        self.crazyProbability = 0.3
-        self.xcraziness = 0.0001
-        self.ws = 0.9
-        self.we = 0.4
-        self.u = 2
+        self.crazyProbability = float(read_config("CASSA", "crazyProbability"))
+        self.xcraziness = float(read_config("CASSA", "xcraziness"))
+        self.ws = float(read_config("CASSA", "ws"))
+        self.we = float(read_config("CASSA", "we"))
+        self.u = float(read_config("CASSA", "u"))
         self.init_Population()
 
     def get_bounds_uppers(self):
@@ -133,11 +134,12 @@ class CASSA:
         print(self.objectiveFunction(*self.F))
 
 
+
 boundsList = ((-2*math.pi, 2*math.pi), (-2*math.pi, 2*math.pi))
 
-# objectiveFunction = lambda x, y: x**2 + y**2 + 25 * (math.sin(x) ** 2 + math.sin(y) ** 2)
+objectiveFunction = lambda x, y: x**2 + y**2 + 25 * (math.sin(x) ** 2 + math.sin(y) ** 2)
 # objectiveFunction = lambda x, y: 20 + x**2 + y**2 - 10*(math.cos(2*math.pi*x) + math.cos(2*math.pi*y))
-objectiveFunction = lambda x, y: -abs(math.sin(x)*math.cos(y)*math.exp(abs(1 - ((x**2+y**2)**0.5))/math.pi))
+# objectiveFunction = lambda x, y: -abs(math.sin(x)*math.cos(y)*math.exp(abs(1 - ((x**2+y**2)**0.5))/math.pi))
 constraintFunction = lambda x, y: True
 
 salp_num = 30

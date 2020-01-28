@@ -3,6 +3,7 @@ from Exceptions.Errors import *
 from Common.EnumSet import Bounds
 import numpy as np
 import sys
+import configparser
 
 
 def inspectors(variablesList, boundsList, constraintFunction):
@@ -71,3 +72,9 @@ def convert_position_to_legal(position, boundsLists):
                 position[index] = boundsLists[index][Bounds.upper]
 
     return position
+
+
+def read_config(node,point):
+    config = configparser.ConfigParser()
+    config.read("/Users/lzh/Desktop/workplace/personalProjects/algorithmModules/optimization-algorithm/resources/config.ini")
+    return config[node][point]

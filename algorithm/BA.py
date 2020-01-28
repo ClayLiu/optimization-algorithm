@@ -26,7 +26,7 @@ class BatSwarm():
         self.x_bounds_list = x_bounds_list
         self.v_bounds_list = v_bounds_list
         self.f_bound = f_bound
-        self.x_dim = len(x_bound)
+        self.x_dim = len(x_bounds_list)
 
         self.alpha = alpha
         self.gamma = gamma
