@@ -3,13 +3,15 @@ from algorithm.GAutils.decode import Decode
 from algorithm.GAutils.encode import Encode
 from algorithm.GAutils.utils import *
 import random
-from algorithm.A import A
+from algorithm.A import arithmetic
 
 
-class GA(A):
+class GA(arithmetic):
     # 种群的设计
-    def __init__(self, objectiveFunction, boundsList, constraintFunction, populationSize, generationNum, extremum=False):
+    def __init__(self, objectiveFunction, boundsList, constraintFunction, populationSize, generationNum,
+                 extremum=False):
 
+        super(GA, self).__init__()
         self.populationChromosome = []  # 种群的染色体,字符串形式存储
         self.populationNumber = []  # 种群染色体对应的数值
 
@@ -40,6 +42,7 @@ class GA(A):
             self.populationChromosome.append(self.encode.grayListEncode(individual))
         self.evaluate()
         # print(self.populationChromosome)
+        # self.iterator()
 
     def get_fitness(self):
         return np.array([self.objectiveFunction(*position) for position in self.populationNumber])
@@ -133,7 +136,7 @@ class GA(A):
             idv1 = self.roulette_wheel_selection()
             idv2 = self.roulette_wheel_selection()
 
-            for i, bounds in enumerate(boundsList):
+            for i, bounds in enumerate(self.boundsList):
 
                 if not isinstance(bounds, int):
                     # 交叉
@@ -181,26 +184,26 @@ class GA(A):
         for chromosome in self.populationChromosome:
             self.populationNumber.append(self.decode.grayListDecode(chromosome))
 
-    def run(self):
+    def iterator(self):
         for i in range(self.generationNum):
             self.evolve()
-            print(np.min(self.fitness))
+            # print(np.min(self.fitness))
 
-        print()
-        print(np.min(self.bestIndividual))
+        # print()
+        print("GA:", np.min(self.bestIndividual))
 
-
-boundsList = ((-2, 2), (-2, 2))
-
-# objectiveFunction = lambda x, y: 20 + x**2 + y**2 - 10*(math.cos(2*math.pi*x) + math.cos(2*math.pi*y))
-
-objectiveFunction = lambda x, y: x**2 + y**2
-
-constraintFunction = lambda x, y: True
-
-populationSize = 100
-generationNum = 100
-
-# 交叉方式 0/1 -> point_crossover/and_or_crossover，交叉基因点位数量，变异基因点位数量
-pop = GA(objectiveFunction, boundsList, constraintFunction, populationSize, generationNum, extremum=False)
-pop.run()
+#
+# boundsList = ((-2, 2), (-2, 2))
+#
+# # objectiveFunction = lambda x, y: 20 + x**2 + y**2 - 10*(math.cos(2*math.pi*x) + math.cos(2*math.pi*y))
+#
+# objectiveFunction = lambda x, y: x**2 + y**2
+#
+# constraintFunction = lambda x, y: True
+#
+# populationSize = 100
+# generationNum = 100
+#
+# # 交叉方式 0/1 -> point_crossover/and_or_crossover，交叉基因点位数量，变异基因点位数量
+# pop = GA(objectiveFunction, boundsList, constraintFunction, populationSize, generationNum, extremum=False)
+# pop.iterator()

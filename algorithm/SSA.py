@@ -1,12 +1,14 @@
 import math
 from Common.utils import *
+from algorithm.A import arithmetic
 
 
-class SSA():
+class SSA(arithmetic):
     def __init__(self, objectiveFunction, boundsList, constraintFunction, salpSum, iterNum, extremum=False):
         """
         :param extremum: false -> min  true -> max
         """
+        super(SSA, self).__init__()
         self.objectiveFunction = objectiveFunction
         self.dimension = len(boundsList)
         self.salpSum = salpSum
@@ -22,9 +24,10 @@ class SSA():
         self.init_population()
 
     def init_population(self):
-        self.salpPositions = generate_population(self.salpSum, self.boundsLists, self.constraintFunction)
+        self.salpPositions = np.array(generate_population(self.salpSum, self.boundsLists, self.constraintFunction))
         self.get_bounds_lowers()
         self.get_bounds_uppers()
+        # self.iterator()
 
     def get_bounds_uppers(self):
         for index, singlebound in enumerate(self.boundsLists):
@@ -72,9 +75,9 @@ class SSA():
             break
         return position
 
-    def iteration(self):
+    def iterator(self):
         for i in range(self.iterNum):
-            print("正在进行第" + str(i+1) + "次")
+            # print("正在进行第" + str(i+1) + "次")
             if self.extremum:
                 self.F = self.salpPositions[np.argmax(self.get_fitness()), :].copy()
             else:
@@ -88,32 +91,40 @@ class SSA():
                 else:
                     self.salpPositions[j] = self.update_follower_salp_position(self.salpPositions[j, :], self.salpPositions[j - 1, :])
 
-        print()
-        print(str(self.iterNum), "次迭代最优解:")
-        print(self.F)
-        print("--------------")
-        print("适应度:")
-        print(self.objectiveFunction(*self.F))
+        # print()
+        # print(str(self.iterNum), "次迭代最优解:")
+        # print(self.F)
+        # print("--------------")
+        # print("适应度:")
+        # print(self.objectiveFunction(*self.F))
+        print("SSA:", self.F, self.objectiveFunction(*self.F))
+
+    def __call__(self, objectiveFunction, boundsList, constraintFunction, salpSum, iterNum, extremum=False):
+        print(1)
+        self.init_population()
+        self.iterator()
 
 
-# 定义变量的约束
-# boundsList = ((-10, 10), (-10, 10), (0, 150), (50, 240))
-boundsList = ((-2*math.pi, 2*math.pi), (-2*math.pi, 2*math.pi))
-# 定义目标函数
-# objectiveFunction = lambda x1, x2, x3, x4: 0.6221*x1*x3*x4 + 1.7781*x2*x3**2 + 3.1661*x4*x1**2 + 19.84*x3*x1**2
-objectiveFunction = lambda x, y: x**2 + y**2 + 25 * (math.sin(x) ** 2 + math.sin(y) ** 2)
-# 定义变量间的约束，可以为单个lambda函数，也可以为lambda函数列表
-constraintFunction = lambda x, y: True
-# constraintFunction = [
-#     lambda x1, x2, x3, x4: -x1 + 0.0193*x3 <= 0,
-#     lambda x1, x2, x3, x4: -x2 + 0.00954*x3 <= 0,
-#     lambda x1, x2, x3, x4: (-math.pi*x4*x3**2) - (4/3) * math.pi*x3**3 + 1296000 <= 0,
-#     lambda x1, x2, x3, x4: x4 - 240 <= 0
-# ]
 
-
-salpSum = 30
-iterNum = 1000
-
-ssa = SSA(objectiveFunction, boundsList, constraintFunction, salpSum, iterNum)
-ssa.iteration()
+# # 定义变量的约束
+# # boundsList = ((-10, 10), (-10, 10), (0, 150), (50, 240))
+# boundsList = ((-2*math.pi, 2*math.pi), (-2*math.pi, 2*math.pi))
+# # 定义目标函数
+# # objectiveFunction = lambda x1, x2, x3, x4: 0.6221*x1*x3*x4 + 1.7781*x2*x3**2 + 3.1661*x4*x1**2 + 19.84*x3*x1**2
+# objectiveFunction = lambda x, y: x**2 + y**2 + 25 * (math.sin(x) ** 2 + math.sin(y) ** 2)
+# # 定义变量间的约束，可以为单个lambda函数，也可以为lambda函数列表
+# constraintFunction = lambda x, y: True
+# # constraintFunction = [
+# #     lambda x1, x2, x3, x4: -x1 + 0.0193*x3 <= 0,
+# #     lambda x1, x2, x3, x4: -x2 + 0.00954*x3 <= 0,
+# #     lambda x1, x2, x3, x4: (-math.pi*x4*x3**2) - (4/3) * math.pi*x3**3 + 1296000 <= 0,
+# #     lambda x1, x2, x3, x4: x4 - 240 <= 0
+# # ]
+#
+#
+# salpSum = 30
+# iterNum = 1000
+#
+# ssa = SSA(objectiveFunction, boundsList, constraintFunction, salpSum, iterNum)
+# ssa.iterator()
+# # SSA(objectiveFunction, boundsList, constraintFunction, salpSum, iterNum)

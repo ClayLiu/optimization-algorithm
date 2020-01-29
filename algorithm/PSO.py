@@ -1,11 +1,13 @@
 import math
 from Common.utils import *
 import numpy as np
+from algorithm.A import arithmetic
 
 
-class PSO:
+class PSO(arithmetic):
     def __init__(self, objectiveFunction, boundsLists, constraintFunction, particleSum, iterNum, extremum=False):
-        self.dimension = len(boundsList)
+        super(PSO, self).__init__()
+        self.dimension = len(boundsLists)
         self.constraintFunction = constraintFunction
         self.objectiveFunction = objectiveFunction
         self.particleSum = particleSum
@@ -23,10 +25,11 @@ class PSO:
         self.init_population()
 
     def init_population(self):
-        self.particleSwarmPosition = generate_population(self.particleSum, self.boundsLists, self.constraintFunction)
+        self.particleSwarmPosition = np.array(generate_population(self.particleSum, self.boundsLists, self.constraintFunction))
         self.velocity = np.random.rand(self.particleSum, self.dimension) * self.velocityMax
         self.particleBestPosition = self.particleSwarmPosition.copy()
         self.globalBestPosition = self.get_global_best_position()
+        # self.iterator()
 
     def get_global_best_position(self):
         if self.extremum:
@@ -96,18 +99,19 @@ class PSO:
         for i in range(self.iterNum):
             self.pso()
 
-            print("正在进行第", i, "次迭代")
-        print(self.globalBestPosition, self.objectiveFunction(*self.globalBestPosition))
+            # print("正在进行第", i, "次迭代")
 
-boundsList = ((-2*math.pi, 2*math.pi), (-2*math.pi, 2*math.pi))
+        print("PSO", self.globalBestPosition, self.objectiveFunction(*self.globalBestPosition))
 
-objectiveFunction = lambda x, y: x**2 + y**2 + 25 * (math.sin(x) ** 2 + math.sin(y) ** 2)
-
-constraintFunction = lambda x, y: True
-
-particleSum = 1000
-iterNum = 1000
-
-pso = PSO(objectiveFunction, boundsList, constraintFunction,  particleSum, iterNum, extremum=False)
-
-pso.iterator()
+# boundsList = ((-2*math.pi, 2*math.pi), (-2*math.pi, 2*math.pi))
+#
+# objectiveFunction = lambda x, y: x**2 + y**2 + 25 * (math.sin(x) ** 2 + math.sin(y) ** 2)
+#
+# constraintFunction = lambda x, y: True
+#
+# particleSum = 1000
+# iterNum = 1000
+#
+# pso = PSO(objectiveFunction, boundsList, constraintFunction,  particleSum, iterNum, extremum=False)
+#
+# pso.iterator()

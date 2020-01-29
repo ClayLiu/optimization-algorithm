@@ -1,15 +1,12 @@
-import numpy as np
 import math
-from collections.abc import Iterable
 from Common.utils import *
-from algorithm.A import A
+from algorithm.A import arithmetic
 
 
-class CASSA(A):
+class CASSA(arithmetic):
     def __init__(self, objectiveFunction, boundsLists, constraintFunction, salp_num, iter_num, extremum=False):
-
         self.objectiveFunction = objectiveFunction
-        self.dimension = len(boundsList)
+        self.dimension = len(boundsLists)
         self.salp_num = salp_num
         self.iter_num = iter_num
         self.boundsLists = boundsLists
@@ -25,7 +22,7 @@ class CASSA(A):
         self.ws = float(read_config("CASSA", "ws"))
         self.we = float(read_config("CASSA", "we"))
         self.u = float(read_config("CASSA", "u"))
-        self.init_Population()
+        self.init_population()
 
     def get_bounds_uppers(self):
         for index, singlebound in enumerate(self.boundsLists):
@@ -41,7 +38,7 @@ class CASSA(A):
             else:
                 self.boundLowers[index] = singlebound[Bounds.lower]
 
-    def init_Population(self):
+    def init_population(self):
         self.get_bounds_uppers()
         self.get_bounds_lowers()
 
@@ -58,6 +55,7 @@ class CASSA(A):
             oneDimensionalPosition = self.boundLowers[i] + (self.boundUppers[i] - self.boundLowers[i]) * sequenceSeed
             salpAllPosition.append(oneDimensionalPosition)
         self.salpAllPosition = np.array(salpAllPosition).T.copy()
+        # self.iterator()
 
     def get_fitness(self):
         return np.array([self.objectiveFunction(*position) for position in self.salpAllPosition])
@@ -111,7 +109,7 @@ class CASSA(A):
             break
         return position
 
-    def iteration(self):
+    def iterator(self):
         for t in range(self.iter_num):
             if self.extremum:
                 self.F = self.salpAllPosition[np.argmax(self.get_fitness()), :].copy()
@@ -127,23 +125,24 @@ class CASSA(A):
                 else:
                     self.salpAllPosition[j, :] = self.update_follower_salp_position(self.salpAllPosition[j, :], self.salpAllPosition[j-1, :], t)
 
-        print(str(self.iter_num), "次迭代最优解:")
-        print(self.F)
-        print("--------------")
-        print("适应度:")
-        print(self.objectiveFunction(*self.F))
+        # print(str(self.iter_num), "次迭代最优解:")
+        # print(self.F)
+        # print("--------------")
+        # print("适应度:")
+        # print(self.objectiveFunction(*self.F))
+        print("CASSA:", self.F, self.objectiveFunction(*self.F))
 
 
-
-boundsList = ((-2*math.pi, 2*math.pi), (-2*math.pi, 2*math.pi))
-
-objectiveFunction = lambda x, y: x**2 + y**2 + 25 * (math.sin(x) ** 2 + math.sin(y) ** 2)
-# objectiveFunction = lambda x, y: 20 + x**2 + y**2 - 10*(math.cos(2*math.pi*x) + math.cos(2*math.pi*y))
-# objectiveFunction = lambda x, y: -abs(math.sin(x)*math.cos(y)*math.exp(abs(1 - ((x**2+y**2)**0.5))/math.pi))
-constraintFunction = lambda x, y: True
-
-salp_num = 30
-iter_num = 1000
-
-ssa = CASSA(objectiveFunction, boundsList, constraintFunction, salp_num, iter_num,)
-ssa.iteration()
+#
+# boundsList = ((-2*math.pi, 2*math.pi), (-2*math.pi, 2*math.pi))
+#
+# objectiveFunction = lambda x, y: x**2 + y**2 + 25 * (math.sin(x) ** 2 + math.sin(y) ** 2)
+# # objectiveFunction = lambda x, y: 20 + x**2 + y**2 - 10*(math.cos(2*math.pi*x) + math.cos(2*math.pi*y))
+# # objectiveFunction = lambda x, y: -abs(math.sin(x)*math.cos(y)*math.exp(abs(1 - ((x**2+y**2)**0.5))/math.pi))
+# constraintFunction = lambda x, y: True
+#
+# salp_num = 30
+# iter_num = 1000
+#
+# ssa = CASSA(objectiveFunction, boundsList, constraintFunction, salp_num, iter_num,)
+# ssa.iterator()
