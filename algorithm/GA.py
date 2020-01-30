@@ -3,7 +3,8 @@ from algorithm.GAutils.decode import Decode
 from algorithm.GAutils.encode import Encode
 from algorithm.GAutils.utils import *
 import random
-from algorithm.A import arithmetic
+from algorithm.arithmetic import arithmetic
+from Common.showUtils import image
 
 
 class GA(arithmetic):
@@ -30,6 +31,11 @@ class GA(arithmetic):
         self.crossoverPointsNumber = int(read_config("GA", "crossoverPointsNumber"))
         self.mutatePointsNumber = int(read_config("GA", "mutatePointsNumber"))
         self.crossoverOperator = int(read_config("GA", "crossoverOperator"))
+
+        self.fitnessList = []
+        self.fitnessPosition = []
+        self.image = image(self.generationNum, self.bestIndividual, self.fitnessPosition)
+
         self.init_population()
 
     def init_population(self):
@@ -118,8 +124,11 @@ class GA(arithmetic):
     def retained_best_individual(self):
         if self.extremum:
             self.bestIndividual.append(self.fitness[np.argmax(self.fitness)])
+            self.fitnessPosition.append(self.populationNumber[np.argmax(self.fitness)])
+
         else:
             self.bestIndividual.append(self.fitness[np.argmin(self.fitness)])
+            self.fitnessPosition.append(self.populationNumber[np.argmin(self.fitness)])
 
     # 进化过程
     def evolve(self):
@@ -186,21 +195,27 @@ class GA(arithmetic):
             self.evolve()
             # print(np.min(self.fitness))
 
-        # print()
-        print("GA:", np.min(self.bestIndividual))
 
-#
-# boundsList = ((-2, 2), (-2, 2))
-#
-# # objectiveFunction = lambda x, y: 20 + x**2 + y**2 - 10*(math.cos(2*math.pi*x) + math.cos(2*math.pi*y))
-#
-# objectiveFunction = lambda x, y: x**2 + y**2
-#
-# constraintFunction = lambda x, y: True
-#
-# populationSize = 100
-# generationNum = 100
-#
-# # 交叉方式 0/1 -> point_crossover/and_or_crossover，交叉基因点位数量，变异基因点位数量
-# pop = GA(objectiveFunction, boundsList, constraintFunction, populationSize, generationNum, extremum=False)
-# pop.iterator()
+        # print()
+        # print("GA:", np.min(self.bestIndividual))
+        # print(self.fitnessPosition)
+
+    def show(self):
+        self.image.show()
+
+
+boundsList = ((-2, 2), (-2, 2))
+
+# objectiveFunction = lambda x, y: 20 + x**2 + y**2 - 10*(math.cos(2*math.pi*x) + math.cos(2*math.pi*y))
+
+objectiveFunction = lambda x, y: x**2 + y**2
+
+constraintFunction = lambda x, y: True
+
+populationSize = 300
+generationNum = 100
+
+# 交叉方式 0/1 -> point_crossover/and_or_crossover，交叉基因点位数量，变异基因点位数量
+pop = GA(objectiveFunction, boundsList, constraintFunction, populationSize, generationNum, extremum=False)
+pop.iterator()
+pop.show()

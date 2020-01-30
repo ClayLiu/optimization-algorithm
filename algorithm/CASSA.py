@@ -1,16 +1,16 @@
 import math
 from Common.utils import *
-from algorithm.A import arithmetic
-
+from algorithm.arithmetic import arithmetic
+from Common.showUtils import image
 
 class CASSA(arithmetic):
-    def __init__(self, objectiveFunction, boundsLists, constraintFunction, salp_num, iter_num, extremum=False):
+    def __init__(self, objectiveFunction, boundsLists, constraintFunction, salpNum, iterNum, extremum=False):
         self.objectiveFunction = objectiveFunction
         self.dimension = len(boundsLists)
-        self.salp_num = salp_num
-        self.iter_num = iter_num
+        self.salpNum = salpNum
+        self.iterNum = iterNum
         self.boundsLists = boundsLists
-        self.salpAllPosition = np.zeros([self.salp_num, self.dimension])
+        self.salpAllPosition = np.zeros([self.salpNum, self.dimension])
         self.F = np.zeros([self.dimension])
         self.boundUppers = np.zeros([self.dimension])
         self.boundLowers = np.zeros([self.dimension])
@@ -22,6 +22,11 @@ class CASSA(arithmetic):
         self.ws = float(read_config("CASSA", "ws"))
         self.we = float(read_config("CASSA", "we"))
         self.u = float(read_config("CASSA", "u"))
+
+        self.fitnessList = []
+        self.fitnessPosition = []
+        self.image = image(self.iterNum, self.fitnessList, self.fitnessPosition)
+
         self.init_population()
 
     def get_bounds_uppers(self):
@@ -45,8 +50,8 @@ class CASSA(arithmetic):
         salpAllPosition = []
         for i in range(self.dimension):
             # 序列生成种子
-            sequenceSeed = np.array(list(np.linspace(0, 1, self.salp_num)))
-            # sequenceSeed = np.matlib.rand(self.salp_num).tolist()[0] # 随机生成种子
+            sequenceSeed = np.array(list(np.linspace(0, 1, self.salpNum)))
+            # sequenceSeed = np.matlib.rand(self.salpNum).tolist()[0] # 随机生成种子
             for j, seed in enumerate(sequenceSeed):
                 if seed < 0.5:
                     sequenceSeed[j] = self.u * seed
@@ -76,7 +81,7 @@ class CASSA(arithmetic):
         return sign
 
     def get_weight(self, t):
-        w = self.ws * (self.ws - self.we) * (self.iter_num - t) / self.iter_num
+        w = self.ws * (self.ws - self.we) * (self.iterNum - t) / self.iterNum
         return w
 
     def update_leader_salp_position(self):
@@ -110,13 +115,13 @@ class CASSA(arithmetic):
         return position
 
     def iterator(self):
-        for t in range(self.iter_num):
+        for t in range(self.iterNum):
             if self.extremum:
                 self.F = self.salpAllPosition[np.argmax(self.get_fitness()), :].copy()
             else:
                 self.F = self.salpAllPosition[np.argmin(self.get_fitness()), :].copy()
 
-            self.c1 = 2 * math.exp(-(4*t/self.iter_num)**2)
+            self.c1 = 2 * math.exp(-(4*t/self.iterNum)**2)
 
             for j, position in enumerate(self.salpAllPosition):
                 if j < self.salpAllPosition.shape[0] / 2:
@@ -125,24 +130,29 @@ class CASSA(arithmetic):
                 else:
                     self.salpAllPosition[j, :] = self.update_follower_salp_position(self.salpAllPosition[j, :], self.salpAllPosition[j-1, :], t)
 
-        # print(str(self.iter_num), "次迭代最优解:")
+            self.fitnessList.append(self.objectiveFunction(*self.F))
+            self.fitnessPosition.append(self.F)
+        # print(str(self.iterNum), "次迭代最优解:")
         # print(self.F)
         # print("--------------")
         # print("适应度:")
         # print(self.objectiveFunction(*self.F))
-        print("CASSA:", self.F, self.objectiveFunction(*self.F))
+        # print("CASSA:", self.F, self.objectiveFunction(*self.F))
+
+    def show(self):
+        self.image.show()
 
 
-#
-# boundsList = ((-2*math.pi, 2*math.pi), (-2*math.pi, 2*math.pi))
-#
-# objectiveFunction = lambda x, y: x**2 + y**2 + 25 * (math.sin(x) ** 2 + math.sin(y) ** 2)
-# # objectiveFunction = lambda x, y: 20 + x**2 + y**2 - 10*(math.cos(2*math.pi*x) + math.cos(2*math.pi*y))
-# # objectiveFunction = lambda x, y: -abs(math.sin(x)*math.cos(y)*math.exp(abs(1 - ((x**2+y**2)**0.5))/math.pi))
-# constraintFunction = lambda x, y: True
-#
-# salp_num = 30
-# iter_num = 1000
-#
-# ssa = CASSA(objectiveFunction, boundsList, constraintFunction, salp_num, iter_num,)
-# ssa.iterator()
+boundsList = ((-2*math.pi, 2*math.pi), (-2*math.pi, 2*math.pi))
+
+objectiveFunction = lambda x, y: x**2 + y**2 + 25 * (math.sin(x) ** 2 + math.sin(y) ** 2)
+# objectiveFunction = lambda x, y: 20 + x**2 + y**2 - 10*(math.cos(2*math.pi*x) + math.cos(2*math.pi*y))
+# objectiveFunction = lambda x, y: -abs(math.sin(x)*math.cos(y)*math.exp(abs(1 - ((x**2+y**2)**0.5))/math.pi))
+constraintFunction = lambda x, y: True
+
+salpNum = 30
+iterNum = 1000
+
+ssa = CASSA(objectiveFunction, boundsList, constraintFunction, salpNum, iterNum,)
+ssa.iterator()
+ssa.show()

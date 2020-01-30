@@ -1,8 +1,8 @@
 import math
 from Common.utils import *
 import numpy as np
-from algorithm.A import arithmetic
-
+from algorithm.arithmetic import arithmetic
+from Common.showUtils import image
 
 class PSO(arithmetic):
     def __init__(self, objectiveFunction, boundsLists, constraintFunction, particleSum, iterNum, extremum=False):
@@ -21,7 +21,13 @@ class PSO(arithmetic):
         self.c2 = float(read_config("PSO", "c2"))
         self.w = float(read_config("PSO", "w"))
         self.velocityMax = float(read_config("PSO", "velocityMax"))
+
+        self.fitnessList = []
+        self.fitnessPosition = []
+        self.image = image(self.iterNum, self.fitnessList, self.fitnessPosition)
+
         self.init_population()
+
 
     def init_population(self):
         self.particleSwarmPosition = np.array(generate_population(self.particleSum, self.boundsLists, self.constraintFunction))
@@ -97,20 +103,26 @@ class PSO(arithmetic):
     def iterator(self):
         for i in range(self.iterNum):
             self.pso()
+            self.fitnessPosition.append(self.globalBestPosition)
+            self.fitnessList.append(self.objectiveFunction(*self.globalBestPosition))
 
             # print("正在进行第", i, "次迭代")
 
-        print("PSO", self.globalBestPosition, self.objectiveFunction(*self.globalBestPosition))
+        # print("PSO", self.globalBestPosition, self.objectiveFunction(*self.globalBestPosition))
 
+    def show(self):
+        self.image.show()
+#
 # boundsList = ((-2*math.pi, 2*math.pi), (-2*math.pi, 2*math.pi))
 #
 # objectiveFunction = lambda x, y: x**2 + y**2 + 25 * (math.sin(x) ** 2 + math.sin(y) ** 2)
 #
 # constraintFunction = lambda x, y: True
 #
-# particleSum = 1000
+# particleSum = 100
 # iterNum = 1000
 #
 # pso = PSO(objectiveFunction, boundsList, constraintFunction,  particleSum, iterNum, extremum=False)
 #
 # pso.iterator()
+# pso.show()
