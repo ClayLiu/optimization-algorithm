@@ -8,10 +8,7 @@ from algorithm.A import arithmetic
 
 class GA(arithmetic):
     # 种群的设计
-    def __init__(self, objectiveFunction, boundsList, constraintFunction, populationSize, generationNum,
-                 extremum=False):
-
-        super(GA, self).__init__()
+    def __init__(self, objectiveFunction, boundsList, constraintFunction, populationSize, generationNum, extremum=False):
         self.populationChromosome = []  # 种群的染色体,字符串形式存储
         self.populationNumber = []  # 种群染色体对应的数值
 

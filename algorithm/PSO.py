@@ -6,7 +6,6 @@ from algorithm.A import arithmetic
 
 class PSO(arithmetic):
     def __init__(self, objectiveFunction, boundsLists, constraintFunction, particleSum, iterNum, extremum=False):
-        super(PSO, self).__init__()
         self.dimension = len(boundsLists)
         self.constraintFunction = constraintFunction
         self.objectiveFunction = objectiveFunction

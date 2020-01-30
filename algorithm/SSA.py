@@ -8,7 +8,6 @@ class SSA(arithmetic):
         """
         :param extremum: false -> min  true -> max
         """
-        super(SSA, self).__init__()
         self.objectiveFunction = objectiveFunction
         self.dimension = len(boundsList)
         self.salpSum = salpSum
