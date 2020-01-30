@@ -1,55 +1,50 @@
 import math
 import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib import FuncAnimation
-
-
-# def update_points(num):
-#     '''
-#     更新数据点
-#     '''
-#     point_ani.set_data(x[num], num)
-#     return point_ani,
-
-# x = np.linspace(0, 2 * np.pi, 100)
-# y = np.sin(x)
-#
-# fig = plt.figure(tight_layout=True)
-# plt.plot(x, y)
-# point_ani, = plt.plot(x[0], y[0], "ro")
-# plt.grid(ls="--")
-# # 开始制作动画
-# ani = animation.FuncAnimation(fig, update_points, np.arange(0, 100), interval=100, blit=True)
-#
-# # ani.save('sin_test2.gif', writer='imagemagick', fps=10)
-# plt.show()
-
-# def show(boundsList,iterNum):
-from Common.EnumSet import *
+from matplotlib.animation import FuncAnimation
+import seaborn as sns
 
 
 class image():
-    def __init__(self, boundsList, iterNum):
+    def __init__(self, iterNum, fitnessList, fitnessPositoin):
+        sns.set_style("whitegrid")
         self.fig, self.ax = plt.subplots()
         self.xdata, self.ydata = [], []
-        self.ln, = self.ax.plot([], [], 'r-', animated=False)
-        self.boundsList = boundsList
-        self.dimension = len(boundsList)
+        self.ln, = self.ax.plot([], [], animated=False)
         self.iterNum = iterNum
+        self.fitnessList = fitnessList
+        self.fitnessPosition = fitnessPositoin
+        self.xlower = 0
+        self.xupper = 0
+        self.text = plt.text(self.iterNum*0.8, (self.xupper-self.xlower)*0.8, '', fontsize=10)
 
     def init(self):
-        self.ax.set_xlim(self.boundsList[0][0], self.boundsList[0][1])
-        self.ax.set_ylim(self.boundsList[1][0], self.boundsList[1][1])
+        self.xlower = min(self.fitnessList) - 10
+        self.xupper = max(self.fitnessList) + 10
+        self.ax.set_xlim(0, self.iterNum)
+        self.ax.set_ylim(self.xlower, self.xupper)
+        self.text = plt.text(self.iterNum * 0.1, self.xupper-7, '', fontsize=10)
         return self.ln,
 
     def update(self, frame):
+        frame = int(frame)-1
         self.xdata.append(frame)
-        self.ydata.append(np.sin(frame))
+        self.ydata.append(self.fitnessList[frame])
         self.ln.set_data(self.xdata, self.ydata)
-        return self.ln,
+        self.text.set_text("iterations: "+str(frame + 1) + "\n" + "fitness: " + str(self.fitnessList[frame]) + "\n" + "position: "+ self.combining_strings(self.fitnessPosition[frame]))
+        return self.ln, self.text,
 
-    def show(self, updateFunc):
-        ani = FuncAnimation(self.fig, updateFunc, frames=np.linspace(0, self.iterNum),
-                            init_func=self.init, blit=True)
+    def combining_strings(self, list):
+        string = ""
+        for i,num in enumerate(list):
+            if i == len(list)-1:
+                string = string + str(num)
+            else:
+                string = string + str(num)+", "
+        return string
+
+    def show(self):
+        ani = FuncAnimation(self.fig, self.update, frames=np.linspace(1, self.iterNum, self.iterNum),
+                            init_func=self.init, blit=True, interval=10, repeat=False)
         plt.show()
 

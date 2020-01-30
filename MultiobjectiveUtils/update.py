@@ -1,33 +1,7 @@
 import numpy as np
-import pareto
-import archiving
+from MultiobjectiveUtils import pareto
+from MultiobjectiveUtils import archiving
 import math
-
-
-def update_position(position, F, lb, ub, c1):
-    # 更新樽海鞘群个体位置
-    for j, p in enumerate(position):
-        if j < position.shape[0] / 2:
-            if np.random.random() >= 0.5:
-                position[j] = F + c1 * ((ub - lb) * np.random.random() + lb)
-            else:
-                position[j] = F - c1 * ((ub - lb) * np.random.random() + lb)
-
-        else:
-            position[j, :] = 0.5 * (position[j, :] + position[j - 1, :])
-
-        for index, var in enumerate(p):
-            if var < lb[index]:
-                position[j][index] = lb[index]
-            elif var > ub[index]:
-                position[j][index] = ub[index]
-    return position.copy()
-
-
-def update_c1(l, L):
-    # 更新c1
-    c1 = 2 * math.exp(-(4 * l / L) ** 2)
-    return c1
 
 
 def update_archive(in_, fitness_, archive_in, archive_fitness, thresh, mesh_div, min_, max_, extremum):

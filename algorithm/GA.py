@@ -216,6 +216,6 @@ populationSize = 300
 generationNum = 100
 
 # 交叉方式 0/1 -> point_crossover/and_or_crossover，交叉基因点位数量，变异基因点位数量
-pop = GA(objectiveFunction, boundsList, constraintFunction, populationSize, generationNum, extremum=False)
+pop = GA(objectiveFunction, boundsList, constraintFunction, populationSize, generationNum, extremum=True)
 pop.iterator()
 pop.show()

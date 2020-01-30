@@ -1,31 +1,42 @@
 from multiprocessing import Pool
+from multiprocessing import Process
 import os, time, random
+import register
+from algorithm.arithmetic import arithmetic
+import math
 
-# 写数据进程执行的代码:
-def write(q):
-    print('Process to write: %s' % os.getpid())
-    for value in ['A', 'B', 'C']:
-        print('Put %s to queue...' % value)
-        q.put(value)
-        time.sleep(random.random())
 
-# 读数据进程执行的代码:
-def read(q):
-    print('Process to read: %s' % os.getpid())
-    while True:
-        value = q.get(True)
-        print('Get %s from queue.' % value)
+def wrap(algorithmClass, objectiveFunction, boundsList, constraintFunction, populationSum, iterNum, extremum=False):
+    a = algorithmClass(objectiveFunction, boundsList, constraintFunction, populationSum, iterNum, extremum)
+    a.iterator()
+    a.show()
 
-if __name__=='__main__':
-    # 父进程创建Queue，并传给各个子进程：
-    q = Queue()
-    pw = Process(target=write, args=(q,))
-    pr = Process(target=read, args=(q,))
-    # 启动子进程pw，写入:
-    pw.start()
-    # 启动子进程pr，读取:
-    pr.start()
-    # 等待pw结束:
-    pw.join()
-    # pr进程里是死循环，无法等待其结束，只能强行终止:
-    pr.terminate()
+
+class calculation:
+    def __init__(self, objectiveFunction, boundsList, constraintFunction, populationSum, iterNum, extremum=False):
+        self.objectiveFunction = objectiveFunction
+        self.boundsList = boundsList
+        self.constraintFunction = constraintFunction
+        self.populationSum = populationSum
+        self.iterNum = iterNum
+        self.extremum = extremum
+        self.processNum = len(arithmetic.__subclasses__())
+
+    def run(self):
+        for algorithmClass in arithmetic.__subclasses__():
+            Process(target=wrap, args=(algorithmClass, objectiveFunction, boundsList, constraintFunction, populationSum, iterNum, extremum,)).start()
+
+
+boundsList = ((-2 * math.pi, 2 * math.pi), (-2 * math.pi, 2 * math.pi))
+
+objectiveFunction = lambda x, y: x ** 2 + y ** 2 + 25 * (math.sin(x) ** 2 + math.sin(y) ** 2)
+
+constraintFunction = lambda x, y: True
+
+populationSum = 30
+
+iterNum = 1000
+extremum=False
+
+c = calculation(objectiveFunction, boundsList, constraintFunction, populationSum, iterNum, extremum=False)
+c.run()

@@ -11,13 +11,13 @@ class mesh_crowd(object):
         :param lb: 目标函数下界，应传入列表[a, b, c]
         :param ub:
         """
-        self.curr_archiving_in = curr_archiving_in  # 当前存档中所有樽海鞘的坐标
-        self.curr_archiving_fit = curr_archiving_fit    # 当前存档中所有樽海鞘的适应度
+        self.curr_archiving_in = curr_archiving_in  # 当前存档中所有的坐标
+        self.curr_archiving_fit = curr_archiving_fit    # 当前存档中所有个体的适应度
         self.mesh_div = mesh_div  # 等分因子，默认值为10等分
-        self.num_ = self.curr_archiving_in.shape[0]  # 存档中樽海鞘的数量
-        self.id_archiving = np.zeros(self.num_)  # 各个樽海鞘的id编号，检索位与curr_archiving的检索位为相对应
-        self.crowd_archiving = np.zeros(self.num_)  # 拥挤度矩阵，用于记录当前樽海鞘所在网格的总樽海鞘数，检索位与curr_archiving的检索为相对应
-        self.probability_archiving = np.zeros(self.num_)  # 各个樽海鞘被选为食物源的概率，检索位与curr_archiving的检索位为相对应
+        self.num_ = self.curr_archiving_in.shape[0]  # 存档中个体的数量
+        self.id_archiving = np.zeros(self.num_)  # 各个个体的id编号，检索位与curr_archiving的检索位为相对应
+        self.crowd_archiving = np.zeros(self.num_)  # 拥挤度矩阵，用于记录当前个体所在网格的总个体数，检索位与curr_archiving的检索为相对应
+        self.probability_archiving = np.zeros(self.num_)  # 各个个体被选为食物源的概率，检索位与curr_archiving的检索位为相对应
         self.food_in = np.zeros((1, self.curr_archiving_in.shape[1]))  # 初始化food矩阵_坐标
         self.food_fit = np.zeros((1, self.curr_archiving_fit.shape[1]))  # 初始化food矩阵_适应值
         self.lb = lb
@@ -38,17 +38,17 @@ class mesh_crowd(object):
             self.id_archiving[i] = self.cal_mesh_id(self.curr_archiving_in[i])
 
     def get_crowd(self):
-        index_ = (np.linspace(0, self.num_ - 1, self.num_)).tolist()  # 定义一个数组存放樽海鞘群的索引号，用于辅助计算
+        index_ = (np.linspace(0, self.num_ - 1, self.num_)).tolist()  # 定义一个数组存放个体群的索引号，用于辅助计算
         index_ = list(map(int, index_))
         while len(index_) > 0:
-            index_same = [index_[0]]  # 存放本次子循环中与index[0]樽海鞘具有相同网格id所有检索位
+            index_same = [index_[0]]  # 存放本次子循环中与index[0]个体具有相同网格id所有检索位
             for i in range(1, len(index_)):
                 if self.id_archiving[index_[0]] == self.id_archiving[index_[i]]:
                     index_same.append(index_[i])
-            number_ = len(index_same)  # 本轮网格中的总樽海鞘数
-            for i in index_same:  # 更新本轮网格id下的所有樽海鞘的拥挤度
+            number_ = len(index_same)  # 本轮网格中的总个体数
+            for i in index_same:  # 更新本轮网格id下的所有个体的拥挤度
                 self.crowd_archiving[i] = number_
-                index_.remove(i)  # 删除本轮网格所包含的樽海鞘对应的索引号，避免重复计算
+                index_.remove(i)  # 删除本轮网格所包含的个体对应的索引号，避免重复计算
 
 
 class select_food(mesh_crowd):
@@ -59,7 +59,7 @@ class select_food(mesh_crowd):
 
     def get_probability(self):
         self.probability_archiving = 10.0 / (self.crowd_archiving ** 3)
-        self.probability_archiving = self.probability_archiving / np.sum(self.probability_archiving)  # 所有樽海鞘的被选概率的总和为1
+        self.probability_archiving = self.probability_archiving / np.sum(self.probability_archiving)  # 所有个体的被选概率的总和为1
 
     def select_food_index(self):
         random_pro = random.uniform(0.0, 1.0)  # 生成一个0到1之间的随机数
@@ -85,8 +85,8 @@ class clear_archiving(mesh_crowd):
         self.probability_archiving = self.crowd_archiving ** 2
         self.probability_archiving = self.probability_archiving / np.sum(self.probability_archiving)
 
-    def get_clear_index(self):  # 按概率清除樽海鞘，拥挤度高的樽海鞘被清除的概率越高
-        len_clear = self.curr_archiving_in.shape[0] - self.thresh  # 需要清除掉的樽海鞘数量
+    def get_clear_index(self):  # 按概率清除个体，拥挤度高的个体被清除的概率越高
+        len_clear = self.curr_archiving_in.shape[0] - self.thresh  # 需要清除掉的个体数量
         clear_index = []
         while len(clear_index) < len_clear:
             random_pro = random.uniform(0.0, 1.0)  # 生成一个0到1之间的随机数
