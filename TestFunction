@@ -1,0 +1,54 @@
+func1 = lambda x, y: 2+(x-2)**2+(y-1)**2
+func2 = lambda x, y: 9*x+(y-1)**2
+
+func = [func1, func2]
+# funct = [fit_1, fit_2]
+
+# constraintFunction = lambda x, y: True
+constraintFunction = [
+    lambda x, y: x**2+y**2<=255,
+    lambda x, y: x-3*y+10<=0
+]
+bounds = [[-20, 20], [-20, 20]]
+
+################
+
+func1 = lambda x, y: 4*x**2+4*y**2
+func2 = lambda x, y: (x-5)**2+(y-5)**2
+func = [func1, func2]
+# funct = [fit_1, fit_2]
+
+# constraintFunction = lambda x, y: True
+constraintFunction = [
+    lambda x, y: (x-5)**2+y**2<=25,
+    lambda x, y: (x-8)**2+(y+3)**2>=7.7
+]
+bounds = [[0, 5], [0, 3]]
+
+#################
+
+func1 = lambda x, y: x**2-y
+func2 = lambda x, y: -0.5*x-y-1
+func = [func1, func2]
+
+constraintFunction = [
+    lambda x, y: 6.5-(x/6)-y >= 0,
+    lambda x, y: 7.5-0.5*x-y >= 0,
+    lambda x, y: 30-5*x-y >= 0
+
+]
+bounds = [[-7, 4], [-7, 4]]
+
+#################
+
+func1 = lambda x, y: x
+func2 = lambda x, y: (1+y)/x
+func = [func1, func2]
+
+constraintFunction = [
+    lambda x, y: y+9*x >= 6,
+    lambda x, y: -y+9*x  >= 1
+]
+bounds = [[0.1, 1], [0, 5]]
+
+

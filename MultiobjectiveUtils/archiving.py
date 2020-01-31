@@ -82,7 +82,7 @@ class clear_archiving(mesh_crowd):
         self.thresh = 0
 
     def get_probability(self):
-        self.probability_archiving = self.crowd_archiving ** 2
+        self.probability_archiving = self.crowd_archiving ** 3  #拥挤度计算系数
         self.probability_archiving = self.probability_archiving / np.sum(self.probability_archiving)
 
     def get_clear_index(self):  # 按概率清除个体，拥挤度高的个体被清除的概率越高

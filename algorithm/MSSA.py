@@ -1,5 +1,6 @@
 import math
 from MultiobjectiveUtils import update, init
+from MultiobjectiveUtils.show import *
 from Common.utils import *
 
 
@@ -117,28 +118,30 @@ class MSSA:
         self.init_population()
 
         for i in range(self.iterNum):
+            print(i)
 
             self.update(i)
 
         return self.archive_in, self.archive_fitness
 
 
-fit_1 = lambda x, y: 1-np.exp(-(((x-y)**2/2)**0.5)**2/0.5)*np.exp(-((((x+y)**2/2)**0.5)-np.sqrt(200))**2/250)
-fit_2 = lambda x, y: 1-np.exp(-(((x-y)**2/2)**0.5)**2/5)*np.exp(-(((x+y)**2/2)**0.5)**2/350)
+# fit_1 = lambda x, y: 1-np.exp(-(((x-y)**2/2)**0.5)**2/0.5)*np.exp(-((((x+y)**2/2)**0.5)-np.sqrt(200))**2/250)
+# fit_2 = lambda x, y: 1-np.exp(-(((x-y)**2/2)**0.5)**2/5)*np.exp(-(((x+y)**2/2)**0.5)**2/350)
 
-func1 = lambda x, y: x ** 2 + y ** 2
-func2 = lambda x, y: x ** 2 + y ** 2
 
+func1 = lambda x, y: x
+func2 = lambda x, y: (1+y)/x
 func = [func1, func2]
-funct = [fit_1, fit_2]
 
-constraintFunction = lambda x, y: True
+constraintFunction = [
+    lambda x, y: y+9*x >= 6,
+    lambda x, y: -y+9*x >= 1
+]
+bounds = [[0.1, 1], [0, 5]]
 
-dim = 2
-bounds = [[-50, 50], [-50, 50]]
 salp_num = 30
-iter_num = 100
-thresh = 100
+iter_num = 1000
+thresh = 200
 mesh_div = 100
 extremum = [False, False]
 mssa = MSSA(func, bounds, constraintFunction, salp_num, iter_num, thresh, mesh_div, extremum)
@@ -148,3 +151,6 @@ print(pareto_in)
 print("-------------")
 print("Pareto边界个体的适应度:")
 print(pareto_fitness)
+
+show_pareto_boundary_individual(np.array(pareto_fitness))
+show_pareto_boundary_individual(np.array(pareto_in))
