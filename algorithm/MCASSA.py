@@ -166,33 +166,40 @@ class MCASSA:
         return self.archive_in, self.archive_fitness
 
 
-func1 = lambda x, y: x
-func2 = lambda x, y: (1+y)/x
-func = [func1, func2]
 
-constraintFunction = [
-    lambda x, y: y+9*x >= 6,
-    lambda x, y: -y+9*x >= 1
-]
-bounds = [[0.1, 1], [0, 5]]
+# r = 0.9 #塑料回收率
+# l = 0.2 #塑料废弃率
 
+# func1 = lambda x, y: x
+# func2 = lambda x, y: (1+y)/x
 
-
-# constraintFunction = lambda x, y: True
-
-salp_num = 30
-iter_num = 1000
-thresh = 200
-mesh_div = 100
-extremum = [False, False]
-mcassa = MCASSA(func, bounds, constraintFunction, salp_num, iter_num, thresh, mesh_div, extremum)
-pareto_in, pareto_fitness = mcassa.done()  # 经过iter_num轮迭代后，pareto边界个体
-print("Pareto边界个体:", len(pareto_in), "个")
-print(pareto_in)
-print("-------------")
-print("Pareto边界个体的适应度:")
-print(np.array(pareto_fitness))
-
-# showfitness(iter_num, np.array(pareto_fitness))
-show_pareto_boundary_individual(np.array(pareto_in))
-show_pareto_boundary_individual(np.array(pareto_fitness))
+# func1 = lambda l, p, r, e, n, a, w, b: l*p-l*p*r(e*n+(1-e)*n)/a*w - b
+# func2 = lambda p, f, a, w, g, b, i: p*f-a*w*g-b*i
+# func = [func1, func2]
+#
+# constraintFunction = [
+#     lambda x, y: y+9*x >= 6,
+#     lambda x, y: -y+9*x >= 1
+# ]
+# bounds = [[0.1, 1], [0, 5]]
+#
+#
+#
+# # constraintFunction = lambda x, y: True
+#
+# salp_num = 30
+# iter_num = 1000
+# thresh = 200
+# mesh_div = 100
+# extremum = [False, False]
+# mcassa = MCASSA(func, bounds, constraintFunction, salp_num, iter_num, thresh, mesh_div, extremum)
+# pareto_in, pareto_fitness = mcassa.done()  # 经过iter_num轮迭代后，pareto边界个体
+# print("Pareto边界个体:", len(pareto_in), "个")
+# print(pareto_in)
+# print("-------------")
+# print("Pareto边界个体的适应度:")
+# print(np.array(pareto_fitness))
+#
+# # showfitness(iter_num, np.array(pareto_fitness))
+# show_pareto_boundary_individual(np.array(pareto_in))
+# show_pareto_boundary_individual(np.array(pareto_fitness))

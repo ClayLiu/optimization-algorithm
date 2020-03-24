@@ -3,6 +3,7 @@ from Common.utils import *
 import numpy as np
 from algorithm.arithmetic import arithmetic
 from Common.showUtils import image
+from prettytable import PrettyTable
 
 class PSO(arithmetic):
     def __init__(self, objectiveFunction, boundsLists, constraintFunction, particleSum, iterNum, extremum=False):
@@ -111,7 +112,12 @@ class PSO(arithmetic):
         # print("PSO", self.globalBestPosition, self.objectiveFunction(*self.globalBestPosition))
 
     def show(self):
-        self.image.show()
+        print()
+        tb = PrettyTable()
+        tb.field_names = ["algorithm name", "iterations", "Optimal solution", "optimal value"]
+        tb.add_row(["PSO", self.iterNum, self.globalBestPosition, self.objectiveFunction(*self.globalBestPosition)])
+        print(tb)
+        # self.image.show()
 #
 # boundsList = ((-2*math.pi, 2*math.pi), (-2*math.pi, 2*math.pi))
 #

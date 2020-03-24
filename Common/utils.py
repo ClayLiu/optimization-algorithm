@@ -76,5 +76,5 @@ def convert_position_to_legal(position, boundsLists):
 
 def read_config(node,point):
     config = configparser.ConfigParser()
-    config.read("/Users/lzh/Desktop/workplace/personalProjects/algorithmModules/optimization-algorithm/resources/config.ini")
+    config.read("/workplace/personalProjects/algorithm modules/optimization-algorithm/resources/config.ini")
     return config[node][point]

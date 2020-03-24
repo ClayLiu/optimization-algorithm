@@ -128,29 +128,29 @@ class MSSA:
 # fit_1 = lambda x, y: 1-np.exp(-(((x-y)**2/2)**0.5)**2/0.5)*np.exp(-((((x+y)**2/2)**0.5)-np.sqrt(200))**2/250)
 # fit_2 = lambda x, y: 1-np.exp(-(((x-y)**2/2)**0.5)**2/5)*np.exp(-(((x+y)**2/2)**0.5)**2/350)
 
-
-func1 = lambda x, y: x
-func2 = lambda x, y: (1+y)/x
-func = [func1, func2]
-
-constraintFunction = [
-    lambda x, y: y+9*x >= 6,
-    lambda x, y: -y+9*x >= 1
-]
-bounds = [[0.1, 1], [0, 5]]
-
-salp_num = 30
-iter_num = 1000
-thresh = 200
-mesh_div = 100
-extremum = [False, False]
-mssa = MSSA(func, bounds, constraintFunction, salp_num, iter_num, thresh, mesh_div, extremum)
-pareto_in, pareto_fitness = mssa.done()  # 经过iter_num轮迭代后，pareto边界个体
-print("Pareto边界个体:", len(pareto_in), "个")
-print(pareto_in)
-print("-------------")
-print("Pareto边界个体的适应度:")
-print(pareto_fitness)
-
-show_pareto_boundary_individual(np.array(pareto_fitness))
-show_pareto_boundary_individual(np.array(pareto_in))
+#
+# func1 = lambda x, y: x
+# func2 = lambda x, y: (1+y)/x
+# func = [func1, func2]
+#
+# constraintFunction = [
+#     lambda x, y: y+9*x >= 6,
+#     lambda x, y: -y+9*x >= 1
+# ]
+# bounds = [[0.1, 1], [0, 5]]
+#
+# salp_num = 30
+# iter_num = 1000
+# thresh = 200
+# mesh_div = 100
+# extremum = [False, False]
+# mssa = MSSA(func, bounds, constraintFunction, salp_num, iter_num, thresh, mesh_div, extremum)
+# pareto_in, pareto_fitness = mssa.done()  # 经过iter_num轮迭代后，pareto边界个体
+# print("Pareto边界个体:", len(pareto_in), "个")
+# print(pareto_in)
+# print("-------------")
+# print("Pareto边界个体的适应度:")
+# print(pareto_fitness)
+#
+# show_pareto_boundary_individual(np.array(pareto_fitness))
+# show_pareto_boundary_individual(np.array(pareto_in))

@@ -5,6 +5,7 @@ from algorithm.GAutils.utils import *
 import random
 from algorithm.arithmetic import arithmetic
 from Common.showUtils import image
+from prettytable import PrettyTable
 
 
 class GA(arithmetic):
@@ -193,29 +194,35 @@ class GA(arithmetic):
     def iterator(self):
         for i in range(self.generationNum):
             self.evolve()
-            # print(np.min(self.fitness))
-
-
-        # print()
-        # print("GA:", np.min(self.bestIndividual))
-        # print(self.fitnessPosition)
 
     def show(self):
-        self.image.show()
+        print()
+        if not self.extremum:
+            bestIndividual = np.min(self.bestIndividual)
+            bestfitnessPosition = self.fitnessPosition[np.argmin(self.bestIndividual)]
+        else:
+            bestIndividual = np.max(self.bestIndividual)
+            bestfitnessPosition = self.fitnessPosition[np.argmax(self.bestIndividual)]
+
+        tb = PrettyTable()
+        tb.field_names = ["algorithm name", "iterations", "Optimal solution", "optimal value"]
+        tb.add_row(["GA", self.generationNum, bestfitnessPosition, bestIndividual])
+        print(tb)
+        # self.image.show()
 
 
-boundsList = ((-2, 2), (-2, 2))
-
-# objectiveFunction = lambda x, y: 20 + x**2 + y**2 - 10*(math.cos(2*math.pi*x) + math.cos(2*math.pi*y))
-
-objectiveFunction = lambda x, y: x**2 + y**2
-
-constraintFunction = lambda x, y: True
-
-populationSize = 300
-generationNum = 100
-
-# 交叉方式 0/1 -> point_crossover/and_or_crossover，交叉基因点位数量，变异基因点位数量
-pop = GA(objectiveFunction, boundsList, constraintFunction, populationSize, generationNum, extremum=True)
-pop.iterator()
-pop.show()
+# boundsList = ((-2, 2), (-2, 2))
+#
+# # objectiveFunction = lambda x, y: 20 + x**2 + y**2 - 10*(math.cos(2*math.pi*x) + math.cos(2*math.pi*y))
+#
+# objectiveFunction = lambda x, y: x**2 + y**2
+#
+# constraintFunction = lambda x, y: True
+#
+# populationSize = 300
+# generationNum = 100
+#
+# # 交叉方式 0/1 -> point_crossover/and_or_crossover，交叉基因点位数量，变异基因点位数量
+# pop = GA(objectiveFunction, boundsList, constraintFunction, populationSize, generationNum, extremum=True)
+# pop.iterator()
+# pop.show()

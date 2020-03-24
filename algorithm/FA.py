@@ -112,16 +112,16 @@ class FireflySwarm():
         best_brightness = self.fireflyBrightness[best_firefly_index]
         return best_position, best_brightness, best_brightness_value_history
 
-
-if __name__ == '__main__':
-    t2_f = lambda x, y : - (x**2 + y**2 + 25 * (math.sin(x) ** 2 + math.sin(y) ** 2))
-    x_bound = [
-        (-2 * math.pi, 2 * math.pi),
-        (-2 * math.pi, 2 * math.pi)
-    ]
-    no_con = lambda x, y : True
-    test = FireflySwarm(t2_f, no_con, 100, x_bound, 0.02, 1.0, 1.0)
-    best_position, best_brightness, best_brightness_value_history = test.iteration(200)
-    print(best_position, best_brightness)
-    # print(best_brightness_value_history)
-    get_fig(best_brightness_value_history, 'FA_result.png')
+#
+# if __name__ == '__main__':
+#     t2_f = lambda x, y : - (x**2 + y**2 + 25 * (math.sin(x) ** 2 + math.sin(y) ** 2))
+#     x_bound = [
+#         (-2 * math.pi, 2 * math.pi),
+#         (-2 * math.pi, 2 * math.pi)
+#     ]
+#     no_con = lambda x, y : True
+#     test = FireflySwarm(t2_f, no_con, 100, x_bound, 0.02, 1.0, 1.0)
+#     best_position, best_brightness, best_brightness_value_history = test.iteration(200)
+#     print(best_position, best_brightness)
+#     # print(best_brightness_value_history)
+#     get_fig(best_brightness_value_history, 'FA_result.png')

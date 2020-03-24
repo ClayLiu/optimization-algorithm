@@ -2,6 +2,7 @@ import math
 from Common.utils import *
 from algorithm.arithmetic import arithmetic
 from Common.showUtils import image
+from prettytable import PrettyTable
 
 class CASSA(arithmetic):
     def __init__(self, objectiveFunction, boundsLists, constraintFunction, salpNum, iterNum, extremum=False):
@@ -140,19 +141,25 @@ class CASSA(arithmetic):
         # print("CASSA:", self.F, self.objectiveFunction(*self.F))
 
     def show(self):
-        self.image.show()
+        print()
+        tb = PrettyTable()
+        tb.field_names = ["algorithm name", "iterations", "Optimal solution", "optimal value"]
+        tb.add_row(["CASSA", self.iterNum, self.F, self.objectiveFunction(*self.F)])
+        print(tb)
+
+        # self.image.show()
 
 
-boundsList = ((-2*math.pi, 2*math.pi), (-2*math.pi, 2*math.pi))
-
-objectiveFunction = lambda x, y: x**2 + y**2 + 25 * (math.sin(x) ** 2 + math.sin(y) ** 2)
-# objectiveFunction = lambda x, y: 20 + x**2 + y**2 - 10*(math.cos(2*math.pi*x) + math.cos(2*math.pi*y))
-# objectiveFunction = lambda x, y: -abs(math.sin(x)*math.cos(y)*math.exp(abs(1 - ((x**2+y**2)**0.5))/math.pi))
-constraintFunction = lambda x, y: True
-
-salpNum = 30
-iterNum = 1000
-
-ssa = CASSA(objectiveFunction, boundsList, constraintFunction, salpNum, iterNum,)
-ssa.iterator()
-ssa.show()
+# boundsList = ((-2*math.pi, 2*math.pi), (-2*math.pi, 2*math.pi))
+#
+# objectiveFunction = lambda x, y: x**2 + y**2 + 25 * (math.sin(x) ** 2 + math.sin(y) ** 2)
+# # objectiveFunction = lambda x, y: 20 + x**2 + y**2 - 10*(math.cos(2*math.pi*x) + math.cos(2*math.pi*y))
+# # objectiveFunction = lambda x, y: -abs(math.sin(x)*math.cos(y)*math.exp(abs(1 - ((x**2+y**2)**0.5))/math.pi))
+# constraintFunction = lambda x, y: True
+#
+# salpNum = 30
+# iterNum = 1000
+#
+# ssa = CASSA(objectiveFunction, boundsList, constraintFunction, salpNum, iterNum,)
+# ssa.iterator()
+# ssa.show()
