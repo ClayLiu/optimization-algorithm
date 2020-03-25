@@ -7,6 +7,5 @@ populationSum = 30
 iterNum = 1000
 extremum=False
 
-
 c = calculation(objectiveFunction, boundsList, constraintFunction, populationSum, iterNum, extremum=extremum)
 c.run()
