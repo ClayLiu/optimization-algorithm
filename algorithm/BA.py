@@ -136,5 +136,5 @@ class BatSwarm(arithmetic):
         print()
         tb = PrettyTable()
         tb.field_names = ["algorithm name", "iterations", "Optimal solution", "optimal value"]
-        tb.add_row(["BA", self.iterNum, self.best_position, self.objectiveFunction(*self.best_position)])
+        tb.add_row(["BA", self.iterNum, self.best_position, self.fitnessList[-1]])
         print(tb)
