@@ -2,7 +2,6 @@ import numpy as np
 import random
 import math
 from Exceptions.Errors import *
-from Common.showUtils import image
 from Common.utils import *
 from Common.EnumSet import *
 from algorithm.arithmetic import arithmetic
@@ -32,22 +31,22 @@ class BatSwarm(arithmetic):
         self.v_bounds_list = [(-1, 1)] * self.x_dim
 
 
-        self.batFrequecy = (np.random.random(batSum) * (f_bound[Bounds().upper] - f_bound[Bounds().lower])) + f_bound[Bounds().lower]
-        self.batPositions = generate_population(batSum, boudsList, constraintFunction)
+        self.batFrequecy = (np.random.random(batSum) * (self.f_bound[Bounds.upper] - self.f_bound[Bounds.lower])) + self.f_bound[Bounds.lower]
+        self.batPositions = np.array(generate_population(batSum, boudsList, constraintFunction))
         self.batNewPositions = np.empty_like(self.batPositions, dtype=np.float)
-        self.batVelocitys = self.generate_velocitys(batSum, v_bounds_list)
+        self.batVelocitys = self.generate_velocitys(batSum, self.v_bounds_list)
         self.batPulseRate = np.random.random(batSum)
         self.batPulseRate_zero = self.batPulseRate.copy()
         self.batLoudness = np.ones(batSum, dtype=np.float)
 
-        self.fitness = np.zeros(self.bat_num) + 1e10
+        self.fitness = np.zeros(self.batSum) + 1e10
     
     def generate_velocitys(self, batSum, boundsList):
         span = []
         lower = []
         for bound in boundsList:
-            span.append(bound[Bounds().upper] - bound[Bounds().lower])
-            lower.append(bound[Bounds().lower])
+            span.append(bound[Bounds.upper] - bound[Bounds.lower])
+            lower.append(bound[Bounds.lower])
         
         span = np.array(span)
         lower = np.array(lower)
@@ -64,7 +63,7 @@ class BatSwarm(arithmetic):
         beta = random.random()
         frequency = self.f_bound[Bounds.lower] + (self.f_bound[Bounds.upper] - self.f_bound[Bounds.lower]) * beta
         
-        self.batVelocitys[batIndex] += (self.batPositions[batIndex] - self.best_position) * frequency
+        self.batVelocitys[batIndex] += (self.batPositions[batIndex] - best_position) * frequency
         self.batNewPositions[batIndex] = self.batVelocitys[batIndex] + self.batPositions[batIndex]
 
     def localSearchNewPosition(self, AverageLoudness, batIndex):
@@ -75,7 +74,7 @@ class BatSwarm(arithmetic):
         self.batNewPositions[batIndex] = self.batPositions[batIndex] + eps * AverageLoudness
         
     def get_fitness(self):
-        for batPosition in self.batPositions:
+        for i, batPosition in enumerate(self.batPositions):
             self.fitness[i] = self.objectiveFunction(*batPosition)
         
         if self.extremum:   # 若为求最大值，则把适应度转为求最小化
@@ -129,7 +128,7 @@ class BatSwarm(arithmetic):
             best_bat_index = np.argmin(self.fitness)
 
             self.fitnessList.append(self.fitness[best_bat_index])
-            self.fitnessPosition.append(self.best_position)
+            self.fitnessPosition.append(self.best_position.copy())
         
 
     def show(self):
