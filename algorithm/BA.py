@@ -59,7 +59,7 @@ class BatSwarm(arithmetic):
         
         return np.vstack(velocitys)
 
-    def globalSearchNewPosition(self, self.best_position : np.ndarray, batIndex : int):
+    def globalSearchNewPosition(self, best_position : np.ndarray, batIndex : int):
         """ 全局搜索解 """
         beta = random.random()
         frequency = self.f_bound[Bounds.lower] + (self.f_bound[Bounds.upper] - self.f_bound[Bounds.lower]) * beta
